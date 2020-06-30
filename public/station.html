@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CH">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>微信授权中...</title>
+</head>
+
+<body>
+  <script>
+    (function (global) {
+      var params = getRequest();
+      var isTo3 = params.to3;
+      var APPID = params.appId;
+      var baseHost = global.location.origin;
+
+      delete params.to3;
+      delete params.appId;
+      var redirect_uri = baseHost + global.location.pathname;
+
+      function getRequest() {
+        var urlQuery = global.location.search
+        if (urlQuery.indexOf('//') > -1) {
+          urlQuery = urlQuery.replace(/[^?]+\?/, '?');
+        }
+        urlQuery = urlQuery.slice(1);
+        var result = {};
+        var kvs = urlQuery.split('&');
+
+        for (var i = 0; i < kvs.length; i++) {
+          var paramsItems = kvs[i].split('=');
+          if (paramsItems[0]) {
+            result[paramsItems[0]] = paramsItems[1];
+          }
+        }
+        return result;
+      };
+
+      function getURLSearchParams(obj) {
+        var queryStr = '';
+        Object.keys(obj).forEach(item => {
+          queryStr += '&' + item + '=' + obj[item];
+        });
+        return queryStr.slice(1);
+      }
+      // 
+      if (isTo3 === 'wxAuthorize') {
+        global.sessionStorage.setItem('cacheReqQueryString', JSON.stringify(params));
+        global.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=' + encodeURIComponent(redirect_uri) + '&response_type=code&scope=snsapi_userinfo&state=1#wechat_redirect';
+      } else {
+        // 授权之后 回跳地址
+        var authoBackUrl = JSON.parse(global.localStorage.getItem('authoBackUrl')||'{"data":"'+baseHost+'/#/pages/login/login"}').data;
+        var cacheReqQuery = JSON.parse(global.sessionStorage.getItem('cacheReqQueryString'));
+        global.localStorage.setItem('to3station', JSON.stringify({ data: params }));
+
+        cacheReqQuery.autho = 1;
+        authoBackUrl = authoBackUrl.indexOf('?') > 0 ? authoBackUrl +'&'+ getURLSearchParams(cacheReqQuery) : authoBackUrl +'?'+ getURLSearchParams(cacheReqQuery);
+
+        global.location.href = authoBackUrl;
+      }
+
+    })(window);
+  </script>
+</body>
+</html>

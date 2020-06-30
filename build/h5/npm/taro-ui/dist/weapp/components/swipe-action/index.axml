@@ -1,0 +1,13 @@
+<block a:if="{{$taroCompReady}}">
+    <view id="{{'swipeAction-' + componentId}}" class="{{rootClass}}" onTouchMove="handleTouchMove" onTouchEnd="handleTouchEnd" onTouchStart="handleTouchStart">
+        <view class="{{anonymousState__temp}}" style="{{anonymousState__temp2}}">
+            <slot></slot>
+        </view>
+        <block a:if="{{anonymousState__temp9}}">
+            <at-swipe-action-options compid="{{$compid__179}}">
+                <view a:key="$loopState__temp4" style="{{item.$loopState__temp6}}" onTap="anonymousFunc0" class="{{item.$loopState__temp8}}" a:for="{{loopArray59}}" a:for-item="item" a:for-index="key" data-e-onTap-so="this" data-e-onTap-a-a="{{item._$indexKey}}"><text class="option__text">{{item.$original.text}}</text>
+                </view>
+            </at-swipe-action-options>
+        </block>
+    </view>
+</block>

@@ -1,0 +1,107 @@
+/**
+ * @Author: cai.ping
+ * @Email: cai.ping@jdxiaokang.com
+ * @Update: 2020-02-24 15:57:31
+ * @Description: 地址管理
+ */
+.content
+  // min-height calc(100% - 90px)
+  // position absolute
+  // width 100%
+  // left 0
+  padding: 24px 32px 170px 32px
+  .item
+    display flex
+    align-items center
+    font-size 28px
+    padding 32px 24px
+    line-height 28px
+    background: #ffffff
+    border-radius: 8px
+    :global
+      .iconfont
+        font-size 30px
+  .item+.item
+    margin-top: 24px
+  .left
+    width calc(100% - 40px)
+    padding-right 40px
+    position: relative
+    padding-left: 50px
+    .icon_ck
+      position: absolute
+      left: 0
+      top:calc(50% - 17px )
+      display: block
+      color: rgba(204, 204, 204, 1)
+      font-size: 35px
+    .active_icon
+      color: rgba(249, 72, 46, 1)
+    .gray
+      color #676767
+      margin-top 18px
+      display block
+      line-height 40px
+    .name_box
+      display flex
+      align-items center
+      font-weight: bold
+      .name
+        display inline-block
+      .tel
+        margin-left 20px
+      .tag
+        font-size 20px
+        line-height 20px
+        background #F9482E
+        padding 5px
+        display inline-block
+        color #fff
+        margin-left 10px
+.button_box
+  position fixed
+  bottom 0
+  left 0
+  z-index 99
+  background #fff
+  width 100%
+  text-align center
+  padding 15px 32px 60px 32px
+  justify-content: flex-end
+  display: flex
+  .button
+    font-size 28px  
+    line-height 28px
+    padding 18px 36px
+    border-radius 49px
+    height 68px
+    display inline-block
+    // flex: 1
+    border:1px solid #F9482E
+    background: #ffffff
+    color: #F9482E
+  .button+.button
+    margin-left: 20px 
+    background #F9482E
+    color #ffffff
+    
+.add_btn
+  width 176px
+  height 72px
+  border-radius 44px
+  text-align center
+  line-height 72px
+  color #ffffff
+  font-size 28px
+  margin 64px auto 0
+  background-color: rgba(249,72,46,1)
+
+
+.back
+  background: rgba(247, 248, 250, 1)
+  position: fixed
+  width: 100%
+  height 100%
+  top: 0
+  left :0
+  z-index: -1

@@ -1,0 +1,95 @@
+
+
+.out
+  padding: 36px 24px 24px 24px
+  border-radius: 0 0 18px 18px
+  background: #fff
+.img_box
+  display: flex
+  align-items: center
+  position: relative
+  .icon
+    display: inline-block
+    background: #F9482E
+    color: #ffffff
+    font-size: 60px
+    line-height: 60px
+    padding: 40px
+    border-radius: 50%
+    opacity :0.8
+  .right
+    margin-left: 30px
+    .name
+      font-size: 34px
+    .lv_box
+      color: #F9482E
+      display: flex
+      align-items: center
+      line-height: 31px
+      .img
+        width: 28px
+        flex-shrink: 0
+        height 31px
+        margin-right: 10px
+        margin-bottom: 0
+        display: block
+      .font
+        font-size: 24px
+        margin-top: 3px
+
+
+.login_out
+  position: absolute
+  right: 20px
+  top: 30px
+  color:#787878
+
+.step_box
+  display: flex
+  align-items: center
+  background: #E2E2E2
+  border-radius: 12px
+  font-size: 24px
+  color: #989898
+  line-height: 24px 
+  margin: 30px 0 0 0
+  overflow: hidden
+  .item
+    flex: 1
+    padding: 30px 0
+    position: relative
+    text-align: center
+    padding-left: 20px
+    &:after
+      content: "";  
+      position: absolute; 
+      right: -18px;
+      top: -8px;
+      z-index:5;
+      border-top: 50px solid transparent;
+      border-bottom: 50px solid transparent;
+      border-left: 20px solid #E2E2E2;
+  .item+.item
+    &:before
+      content: "";  
+      border-top: 60px solid transparent;
+      border-bottom: 60px solid transparent;
+      border-left: 24px solid #fff;
+      position: absolute; 
+      left: 0px; 
+      top: -17px;
+      z-index :4
+  .active
+    background: #F9482E
+    color: #fff
+    &:after
+      border-left-color:#F9482E
+
+
+.gray
+  font-size: 20px
+  color: #C9C9C9
+  width: 100%
+  text-align: center
+  margin-top: 30px
+

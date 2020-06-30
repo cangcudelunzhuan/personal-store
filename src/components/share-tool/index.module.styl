@@ -1,0 +1,73 @@
+
+
+
+.share_box
+  display flex
+  align-items center
+  width 614px
+  margin 42px auto
+  background #ffffff
+  border-radius 8px
+  justify-content center
+  .item
+    flex 1
+    text-align center
+    padding-top 25px
+    .font
+      color #333
+      font-size 28px
+      line-height 28px
+      margin-bottom 30px
+      margin-top 25px
+    .wx
+      color #0ABD15
+    .img
+      color #FF833D
+    .link
+      color #319DFF
+  :global
+    .iconfont
+      font-size 88px
+      display block
+      line-height 88px
+      
+.canvas
+  position: fixed
+  opacity :0
+  z-index :-1
+  top: 0
+  left :0
+.img_desc
+  margin-top: 55px
+  font-size 26px
+  color rgba(255, 255, 255, 1)
+  width 100%
+  text-align center
+.qrModal
+  .share_close_container
+    display: flex
+    justify-content: center
+    margin-bottom: 24px
+  .share_close
+    width: 56px
+    height: 56px
+  .canvasImg
+    width: 70vw // 574px
+    height: auto
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    .img
+      display: block
+      width: 100%
+  :global
+    .at-modal__overlay
+      background-color: rgba(0, 0, 0, 0.7)
+    .at-modal__container
+      padding 0
+      background-color: transparent
+      max-width: auto
+    .at-modal__content
+      padding 0
+      max-height: 100%

@@ -1,0 +1,76 @@
+
+
+:global
+  .at-frozen
+    position: relative
+  .at-float-layout__container
+    height: calc(50%)
+    max-height: calc(100%)
+  .layout-body
+    // .isFromModal
+    .at-modal
+      opacity :0
+    .at-modal--active
+      top: calc(-100%)
+      min-height: calc(200%)
+      opacity :100
+
+.wx_shareicon
+  display flex
+  align-items center
+  .icon_item
+    text-align center
+    font-size 24px
+  .icon_item+.icon_item
+    margin-left: 50px
+    
+.share_wx_box
+  :global
+    .at-modal__container
+      background-color rgba(247, 247, 247, 1)
+      overflow visible
+      top 300px
+    // .at-modal__overlay
+    //   background-color: #f90
+  .share_tip_box
+    text-align center
+    display flex
+    flex-direction column
+    justify-content center
+    align-items center
+    padding 20px 0
+    .icon_box
+      background #ffffff
+      width 120px
+      height 120px
+      display flex
+      align-items center
+      justify-content center
+      border-radius 30px
+      flex-shrink 0
+      margin 0 auto 10px auto
+      :global
+        .iconfont
+          font-size 60px
+          line-height 60px
+          color #08C163
+    .big
+      font-size 28px
+      font-weight 600
+      margin 30px 40px 0 40px
+      text-align center
+      line-height 38px
+    .small
+      font-size 24px
+      color #b3b3b3
+      margin-top 20px
+      text-align center
+      line-height 24px
+  .arrow
+    width: 55px
+    height:114px
+    position: absolute
+    right:-90px
+    top: -80px
+    display: block
+    z-index :9999

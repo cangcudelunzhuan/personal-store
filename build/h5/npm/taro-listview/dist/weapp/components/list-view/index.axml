@@ -1,0 +1,52 @@
+<block a:if="{{$taroCompReady}}">
+    <skeleton compid="{{$compid__181}}">
+        <scroll-view class="{{className + ' scrollView'}}" style="{{anonymousState__temp}}" scroll-y="{{canScrollY}}" lower-threshold="{{80}}" onScrollToLower="handleScrollToLower" scroll-with-animation="{{true}}" onScroll="onScroll" id="iizzz" onTaroCollectChilds="$collectChilds">
+            <view style="{{anonymousState__temp2}}" onTouchMove="anonymousFunc0" onTouchEnd="anonymousFunc1" onTouchStart="anonymousFunc2" onTouchCancel="anonymousFunc3">
+                <view class="bodyView" id="bodyView">
+                    <view style="{{anonymousState__temp3}}">
+                        <view style="{{anonymousState__temp4}}" class="pullDownBlock">
+                            <view class="tip">
+                                <block a:if="{{!downLoading}}">
+                                    <view id="tip-dampText">{{dampText}}</view>
+                                </block>
+                                <block a:if="{{downLoading}}">
+                                    <block>
+                                        <block a:if="{{customizeLoading}}">
+                                            <slot name="customizeloading"></slot>
+                                        </block>
+                                        <block a:else>
+                                            <loading compid="{{$compid__182}}"></loading>
+                                        </block>
+                                    </block>
+                                </block>
+                            </view>
+                        </view>
+                        <block a:if="{{showChildren}}">
+                            <slot></slot>
+                        </block>
+                        <result-page compid="{{$compid__183}}">
+                            <view slot="error">
+                                <slot name="error"></slot>
+                            </view>
+                            <view slot="empty">
+                                <slot name="empty"></slot>
+                            </view>
+                        </result-page>
+                        <block a:if="{{footerLoading}}">
+                            <view class="loading">{{footerLoadingText}}</view>
+                        </block>
+                        <block a:if="{{customFooterLoading}}">
+                            <slot name="footerloading"></slot>
+                        </block>
+                        <block a:if="{{footerLoaded}}">
+                            <view class="loaded">{{noMore || footerLoadedText}}</view>
+                        </block>
+                        <block a:if="{{customFooterLoaded}}">
+                            <slot name="footerloaded"></slot>
+                        </block>
+                    </view>
+                </view>
+            </view>
+        </scroll-view>
+    </skeleton>
+</block>

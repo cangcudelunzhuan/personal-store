@@ -1,0 +1,130 @@
+/**
+ * @Author: cai.ping
+ * @Email: cai.ping@jdxiaokang.com
+ * @Update: 2020-03-07 10:21:09
+ * @Description: true
+ */
+
+ .content
+   background: #FF3B3B
+   padding-bottom: 170px
+ .one
+   width: 100%
+   height :784px
+.two
+   width: 100%
+   height :538px
+   background: #FF3B3B
+.three
+   width: 100%
+   height :653px
+
+
+.buttom_box
+  position: fixed
+  bottom: 0
+  width: 100%
+  display: flex
+  background: linear-gradient(90deg,rgba(255,245,212,1) 0%,rgba(255,238,187,1) 100%);
+  .left
+    position: relative
+    z-index :1
+    color: #FFF2C7
+    width: 230px
+    text-align: center
+    font-size: 34px
+    .big
+      line-height: 130px
+    .small
+      font-size: 24px
+      line-height: 24px
+    &:after
+      content: ''
+      position: absolute
+      left :0
+      top: 0
+      border-left: 0px solid transparent;
+      border-right: 40px solid transparent;
+      border-bottom: 136px solid #534132;
+      width: 100%
+      z-index :-1
+  .right
+    display: flex
+    padding: 44px 24px
+    align-items: flex-end
+    justify-content: flex-end
+    flex: 1
+    line-height: 44px
+    .red
+      color: #FF3B3B
+      font-size: 44px
+      margin-right: 10px
+      flex-shrink: 0
+    .gray
+      color: #6A4A22
+      font-size: 30px
+      line-height: 30px
+      text-decoration: line-through
+    .button
+      color: #493419
+      font-size: 32px
+      display: flex
+      align-items: center
+      margin-left: 20px
+      line-height: 32px
+      flex-shrink: 0
+      :global
+        .iconfont
+          font-size: 30px
+
+
+
+.button_box
+  display: flex
+  align-items: center
+  justify-content: center
+  padding: 10px 24px
+  background: #ffffff
+  padding-bottom: 70px
+  position: fixed
+  width: 100%
+  left 0
+  bottom: 0
+  .button_item
+    flex: 1
+    border: 1px solid #efefef
+    color: #666666
+    height 88px
+    line-height: 88px
+    text-align: center
+    display: flex
+    align-items: center
+    position: relative
+    background: #ffffff
+    border-radius: 8px
+    font-size: 28px
+    .left
+      display: flex
+      align-items: center
+      justify-content: center
+      flex: 1
+      .amount
+        font-size: 32px
+        color: #F9482E
+        margin-right: 10px
+      .origin
+        font-size: 24px
+        text-decoration: line-through
+    .icon
+      position: absolute
+      font-size: 24px
+      right: 20px
+      top: 0px
+  .button_item+.button_item
+    margin-left: 10px
+  .free_button
+    background: linear-gradient(136deg,rgba(83,65,50,1) 0%,rgba(43,37,28,1) 100%)
+    border-color: #534132
+    color: #FFF2C7
+    .icon
+      color:  #FFF2C7

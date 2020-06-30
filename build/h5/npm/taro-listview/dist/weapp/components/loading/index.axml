@@ -1,0 +1,7 @@
+<block a:if="{{$taroCompReady}}">
+    <view class="loading-box" data-color="red">
+        <view style="width:100%;height:100%" class="lds-rolling">
+            <view class="circle" style="{{anonymousState__temp}}"></view>
+        </view>
+    </view>
+</block>

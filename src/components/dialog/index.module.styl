@@ -1,0 +1,42 @@
+.dialog_box
+  position fixed
+  width 100%
+  height 100%
+  left 0
+  bottom 0
+  background rgba(0, 0, 0, 0.45)
+  z-index 10
+.box
+  background rgba(255, 255, 255, 1)
+  border-radius 18px
+  position absolute
+  left 50%
+  top 50%
+  transform translate(-50%, -50%)
+  font-size 28px
+  color rgba(102, 102, 102, 1)
+  text-align center
+  width 540px
+.content
+  position relative
+  height 114px
+  line-height 114px
+.btn_box
+  display flex
+  align-items center
+  height 80px
+.btn
+  width 50%
+  color #333
+  position relative
+  line-height 80px
+.red
+  color #F9482E
+.after::after
+  content ''
+  width 1PX
+  position absolute
+  top 0
+  bottom 12px
+  right 0
+  background-image linear-gradient(90deg, rgba(235, 235, 235, 1), transparent)

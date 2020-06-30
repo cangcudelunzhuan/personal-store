@@ -1,0 +1,26 @@
+<block a:if="{{$taroCompReady}}">
+    <block a:if="{{_isOpened}}">
+        <view class="{{anonymousState__temp}}">
+            <block a:if="{{hasMask}}">
+                <view class="at-toast__overlay"></view>
+            </block>
+            <view class="{{bodyClass}}" style="{{anonymousState__temp2}}" onTap="handleClick">
+                <view class="toast-body-content">
+                    <block a:if="{{realImg}}">
+                        <view class="toast-body-content__img">
+                            <image class="toast-body-content__img-item" src="{{realImg}}" mode="scaleToFill"></image>
+                        </view>
+                    </block>
+                    <block a:if="{{isRenderIcon}}">
+                        <view class="toast-body-content__icon"><text class="{{iconClass}}"></text>
+                        </view>
+                    </block>
+                    <block a:if="{{text}}">
+                        <view class="toast-body-content__info"><text>{{text}}</text>
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </view>
+    </block>
+</block>

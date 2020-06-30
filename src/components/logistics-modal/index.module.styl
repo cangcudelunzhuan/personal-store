@@ -1,0 +1,75 @@
+
+.out
+  :global
+    .at-modal__container
+      width: 600px
+.button_box
+  display: flex
+  align-items: center
+  justify-content: space-between
+  width: 100%
+  .item
+    flex: 1
+    text-align: center
+    padding: 24px
+    position: relative
+    font-size: 28px
+    color: #777777
+  .red
+    color: rgba(249, 72, 46, 1)
+  .item+ .item
+    &:before
+      position: absolute
+      left: 0
+      top: -50%
+      height 200%
+      width: 1px
+      content: ''
+      transform: scale(0.5)
+      background: #e5e5e5
+
+
+.line
+  display: flex
+  align-items: center
+  font-size: 28px
+  padding: 0 20px
+  color: #777777
+  .label
+    margin-right: 10px
+    flex-shrink: 0
+  .input
+    flex: 1
+    padding: 20px 24px
+    border: 1px solid rgba(234, 234, 234, 1)
+    display: flex
+    align-items: center
+    justify-content: space-between
+    position: relative
+    .icon
+      font-size: 20px
+      color: RGBA(153, 153, 153, 1)
+      transform: rotate(90deg)
+      width: 20px
+    .inner
+      width: 100%
+.line+.line
+  margin-top: 24px
+
+
+
+.scroll_content
+  position: fixed
+  width: 390px
+  height: 390px
+  top: calc(50% + 50px)
+  background: #ffffff
+  left 240px
+  border: 1px solid rgba(234, 234, 234, 1)
+  z-index: 9999
+  padding: 32px 24px
+  color:  #777777
+  font-size: 28px
+  .item
+    padding: 5px 0
+

@@ -1,0 +1,94 @@
+/**
+ * @Author: 福虎
+ * @Email: tanshenghu@163.com
+ * @Update: 2020-02-27 11:30:14
+ * @Description: 选货市场
+ */
+.hot_banner
+  width:100%
+  height:auto
+
+.hot_list
+  background-color: white
+  padding: 24px
+  transition: height 1s ease 0
+
+.list_content_box
+  background-color: white
+  position relative
+
+.hide_acitve_hot
+  height:0!important
+  padding:0
+  overflow hidden
+
+.list_view
+  -webkit-overflow-scrolling: touch
+
+.grid_empty
+  padding-top:30px
+
+.tab_paging_box
+  background-color: white
+  :global
+    .at-tabs__header
+      // margin-bottom:20px
+      background:#F7F7F7
+      padding-bottom:10px
+    .at-tabs__item
+      font-size: 28px
+      line-height: 28px
+      position: relative
+      color: #666666
+      margin: 10px 0
+      &:after
+        width: 0
+        transition: all 0.2s 
+        position: absolute
+        content: ''
+        height:5px;
+        background:linear-gradient(270deg,rgba(255,255,255,1) 0%,rgba(249,72,46,1) 100%);
+        border-radius:3px;
+        left: 25%
+        bottom: 5px
+    .at-tabs__item--active
+        color: #333333
+        font-weight: bold
+        &:after  
+          width: 50%  
+    .at-tabs__item-underline
+      display: none
+    .at-tabs__underline
+      display: none
+
+.tab_bar
+  top:0
+  width:100%
+  z-index 20
+
+.fix_tab
+  position: fixed
+
+.hidden_bar
+  visibility: hidden
+
+.search_box
+  border:1Px solid #F9482E
+  border-radius: 72px
+  height:72px
+  position relative
+  margin-bottom: 20px
+  input
+    height:100%
+    border:none
+    padding-left:70px
+    padding-right: 40px
+
+.search_icon
+  position absolute
+  left:20px
+  top:10px
+  width:32px
+  height:32px
+  font-size: 32px
+  color:#CACACA

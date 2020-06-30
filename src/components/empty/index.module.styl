@@ -1,0 +1,22 @@
+.empty
+  width:92%
+  min-height:132px
+  margin-left:auto
+  margin-right:auto
+  position relative
+  display: flex
+  justify-content: center
+  align-items: center
+  &:after
+    content: attr(data-msg)
+    position: absolute
+    width:100%
+    left: 0
+    bottom: -40px
+    text-align: center
+    color:rgba(102, 102, 102, 1)
+    font-size: 28px
+
+.empty_img
+  width:480px
+  height:auto

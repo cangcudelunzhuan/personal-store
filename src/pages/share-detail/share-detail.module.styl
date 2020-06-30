@@ -1,0 +1,450 @@
+/**
+ * @Author: limin.zhang
+ * @Email: 1196217890@qq.com
+ * @Update: 2020-02-25 16:58:26
+ * @Description: true
+ */
+.imgturn
+  width 100%
+  background #F7F7F7
+  overflow hidden
+  :global
+    .swiper-container
+      height 750px
+    .taro-img
+      width 100%
+      height auto
+    button
+      padding: 0
+      line-height: 1
+      margin: 0
+      border-width: 0px
+      border-radius: 0px
+      &::after
+        display: none
+.toApp
+  z-index: 999
+  position: fixed
+  top: 0
+  left: 0
+  width: 100%
+  height: 84px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  .appLeft
+    flex: 1
+    height: 100%
+    display: flex
+    align-items: center
+    background-color: #333333
+    .appColse
+      font-size: 28px
+      color: #fff
+      padding: 24px
+    .appLogo
+      width: 56px
+      height: 56px
+      margin-right: 12px
+    .appLabel
+      font-size: 28px
+      color: #ffffff
+  .appRight
+    flex: 0 0 auto
+    width: 160px
+    height: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    background-color: #F9482E
+    color: #ffffff
+    font-size: 28px
+.bannerMes
+  width 750px
+.bannerImg
+  position relative
+.banner_img_items
+  width 100%
+  height 520px
+.numPoint
+  position absolute
+  right 24px
+  bottom 17px
+  z-index 99
+  width 70px
+  height 40px
+  background rgba(0, 0, 0, 0.4)
+  border-radius 20px
+  display flex
+  justify-content center
+  align-items center
+  font-size 24px
+  color #fff
+.detailprice
+  width 100%
+  background #fff
+  margin-bottom 20px
+  padding 32px 32px 37px
+.detailMes
+  width 100%
+  height 89px
+  background #fff
+  font-size 24px
+  font-weight 400
+  color rgba(50, 50, 50, 1)
+  display flex
+  align-items center
+  padding 0 28px
+.titleGoods
+  with 100%
+  height 96px
+  display flex
+  justify-content center
+  align-items center
+  font-size 28px
+.getPrice
+  display inline-block
+  height 36px
+  background rgba(249, 72, 46, 1)
+  border-radius 18px
+  color #fff
+  line-height 36px
+  text-align center
+  padding 0 6px
+.price_sales
+  display flex
+  justify-content space-between
+.topMes
+  height 36px
+  display flex
+  align-items center
+  margin-bottom 12px
+.originPrice
+  line-height 1
+  color rgba(179, 179, 179, 1)
+  font-size 20px
+  margin-right 10px
+.volume_text
+  margin-right 0
+.originpriceNum
+  line-height 1
+  text-decoration line-through
+  color rgba(179, 179, 179, 1)
+  font-size 24px
+.volume_num
+  text-decoration none
+.backpoint
+  display inline-block
+  width 6px
+  height 6px
+  background #000
+  border-radius 50%
+  margin 0 20px
+.allInner
+  display flex
+  align-items center
+.goodsName
+  font-size 28px
+  color rgba(51, 51, 51, 1)
+.openAppBtn
+  width: 100%
+  height: 84px
+  display: flex
+  justify-content: center
+  align-items: center
+  background-color: rgba(247,248,250,1)
+  margin-top: 32px
+  border-radius:8px
+  .btn
+    color: #CCCCCC
+    font-size: 28px
+.allImg
+  background #fff
+  margin-bottom: 150px
+  img
+    display block
+    width 100%
+    height 100%
+.off_notice
+  position fixed
+  width 100%
+  height 68px
+  bottom 98px
+  left 0
+  display flex
+  justify-content center
+  align-items center
+  background-color #f99d2e
+  color #b37121
+  font-size 24px
+.footbar
+  position fixed
+  width 100%
+  height 98px
+  bottom 0
+  left 0
+  background #ffffff
+  display flex
+  align-items center
+  box-sizing content-box
+  padding-bottom constant(safe-area-inset-bottom)
+  padding-bottom env(safe-area-inset-bottom)
+.newfootbar
+  position fixed
+  width 100%
+  height 98px
+  bottom 0
+  left 0
+  background #ffffff
+  display flex
+  align-items center
+  justify-content: center
+  box-sizing content-box
+  padding-bottom constant(safe-area-inset-bottom)
+  padding-bottom env(safe-area-inset-bottom)
+.leftFootbar
+  width 50%
+  display flex
+  align-items center
+  justify-content space-around
+.rightFootbar
+  display flex
+  width 368px
+  margin-right 24px
+.leftButton
+  width 184px
+  height 68px
+  background rgba(249, 72, 46, 1)
+  border-radius 34px 0px 0px 34px
+  display flex
+  justify-content center
+  align-items center
+  color #fff
+.leftButton1
+  width 368px
+  height 68px
+  background rgba(249, 72, 46, 1)
+  border-radius 34px
+  display flex
+  justify-content center
+  align-items center
+  color #fff
+.rightButton
+  width 184px
+  height 68px
+  line-height 68x
+  background rgba(51, 40, 38, 1)
+  border-radius 0px 34px 34px 0px
+  display flex
+  justify-content center
+  align-items center
+  color #fff
+.btnfooter
+  display flex
+  flex-direction column
+  justify-content center
+  align-items center
+.right_btn
+  width 240px
+  height 68px
+  position absolute
+  top 50%
+  right 24px
+  transform translateY(-50%)
+  display flex
+  justify-content center
+  align-items center
+  border-radius 34px
+  background-color #332826
+  color #fff
+  font-size 28px
+.openInner
+  width 100%
+  height 683px
+.closeBtn
+  width 100%
+  text-align: right 
+  .icon_close
+    font-size: 24px
+    color: #999999
+.pricePhoto
+  width 100%
+  height 178px
+  display flex
+  align-items center
+  margin-bottom 20px
+.leftPriceImg
+  width 178px
+  height 178px
+  border-radius 6px
+  margin-right 16px
+  background-size cover
+  background-repeat no-repeat
+  img
+    width 100%
+    height 100%
+    display block
+    border-radius 6px
+.eveMes
+  width 100%
+.titleMes
+  font-size 28px
+  color rgba(51, 51, 51, 1)
+  margin-bottom 16px
+.spaceEve
+  width 100%
+  display flex
+  flex-wrap wrap
+.eveStyle
+  padding 10px 20px
+  border-radius 2px
+  border 2px solid rgba(178, 178, 178, 1)
+  color #B2B2B2
+  font-size 24px
+  margin-right 16px
+  margin-bottom 10px
+.activeColor
+  border-radius 2px
+  border 2px solid rgba(249, 72, 46, 1)
+  color rgba(249, 72, 46, 1)
+  font-size 24px
+.buyItem
+  position fixed
+  left 0
+  bottom 0
+  width 100%
+  height 98px
+  display flex
+  justify-content center
+  align-items center
+  background #ffffff
+  box-shadow 0px -2px 0px 0px rgba(240, 240, 240, 1)
+.buyButton
+  width 694px
+  height 68px
+  background rgba(249, 72, 46, 1)
+  border-radius 34px
+  color #fff
+  font-size 28px
+  text-align center
+  line-height 68px
+.share_avatar
+  position absolute
+  top -89px
+  left 50%
+  transform translateX(-50%)
+  width 178px
+  height 178px
+  border 6px solid #fff
+  border-radius 6px
+.botImg
+  width 100%
+  margin-top 48px
+  display flex
+  justify-content space-around
+.eveInner
+  display flex
+  justify-content center
+  flex-direction column
+  align-items center
+  margin-bottom 140px
+.topImg
+  width 88px
+  height 88px
+  img
+    display block
+    width 100%
+    height 100%
+.gray
+  background rgba(232, 233, 235, 1)
+  color rgba(102, 102, 102, 1)
+
+.button_item
+  flex: 1
+  font-size: 28px
+  padding: 20px
+  border-radius: 8px
+  color: #ffffff
+  background: rgba(249, 72, 46, 1)
+  margin: 20px
+  text-align: center
+.button_item+.button_item
+  margin-left: 0px
+  background: rgba(52, 52, 52, 1)
+
+
+.buy_layout
+  :global
+    .at-float-layout__container, .layout-body, .layout-body__content
+      max-height: 780px
+      height :780px
+
+
+.mes_item
+  display: flex
+  align-items: center
+  justify-content: space-between
+  font-size: 26px
+  color: #333333
+  padding: 30px 24px
+  background: #ffffff
+  width: 100%
+  margin-top: 15px
+  .left
+    flex: 1
+    display: flex
+    align-items: center
+    .title
+      color: #999999
+      margin-right: 20px
+    .area
+      flex: 1
+      max-width: 400px
+  .icon_more
+    font-size: 30px
+    color: #C9C9C9
+    width: 32px
+    height: 32px
+    line-height: 32px
+    text-align: center
+  
+.noArea_box
+  :global
+    .at-float-layout .layout-header 
+      background-color: #ffffff
+      text-align: center
+      padding: 30px
+      padding-right: 0
+      border-bottom: 1px solid #efefef
+    .layout-header__title      
+      font-size: 32px  
+    .at-float-layout .layout-body  
+      padding: 30px
+    .at-float-layout__container, .layout-body, .layout-body__content
+      max-height: 550px
+      height :550px
+  .item   
+    line-height: 40px
+    .title
+      font-size: 30px
+      display: inline
+    .mes
+      color: #999999
+      font-size: 28px
+      margin-left: 20px
+      display: inline
+  .item +.item  
+    margin-top: 10px
+  .area_scroll
+    height: 500px
+    width: 100%
+.button_style
+  width:686px
+  height:80px
+  background: #cccccc
+  border-radius: 60px
+  display: flex
+  justify-content: center
+  align-items: center
+  font-size: 28px
+  color:#ffffff

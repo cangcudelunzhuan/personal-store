@@ -1,0 +1,5 @@
+<block a:if="{{$taroCompReady}}">
+    <form class="{{rootCls}}" style="{{anonymousState__temp}}" onSubmit="onSubmit" report-submit="{{reportSubmit}}" onReset="onReset" data-e-onSubmit-so="this" data-e-onReset-so="this">
+        <slot></slot>
+    </form>
+</block>

@@ -1,0 +1,473 @@
+/**
+ * @Author: limin.zhang
+ * @Email: limin.zhang@jdxiaokang.com
+ * @Update: 2020-03-02 11:54:29
+ * @Description: 售后进度
+ */
+:global
+  .taro_page
+    background linear-gradient(180deg, rgba(242, 237, 237, 1) 0%, rgba(251, 251, 249, 1) 100%)
+    min-height: 100%
+  .close_icon
+    font-size: 16px
+.content
+  // padding: 24px 32px
+  padding-bottom: 138px
+  :global
+    .at-float-layout__container
+      border-top-left-radius: 18px
+      border-top-right-radius: 18px
+      min-height: 484px
+    .layout-body
+      padding: 0
+    .at-modal__content
+      text-align: center
+      display: flex
+      align-items: center
+      justify-content: center
+    .content-simple
+      line-height: 40px
+      text-align: center
+      padding: 0 25px
+ .header
+  display: flex
+  flex-direction: column
+  // align-items: center
+  background-color: #F8EECE
+  // border-radius: 12px
+  padding: 24px 0 24px 32px
+  color: #FF7833
+  margin-bottom: 24px
+  .header_title
+    line-height: 44px
+    display: flex
+    font-size: 34px
+    font-weight: 600 
+    margin-bottom: 15px
+    .header_icon
+      margin-right: 12px
+  .header_content
+    max-width: 72.8%
+    line-height: 36px
+    margin-top: 12px
+    // text-align: center
+    // color: #C8C8C8
+    font-size: 28px
+.body
+  width: 100%
+  position: relative
+.info_box
+  margin-bottom: 24px
+  background-color: #fff
+  // border-radius: 12px
+.progress_bar 
+  display: flex
+  align-items: center
+  justify-content: space-between
+  padding: 32px 48px 38px 
+  .state_item
+    display: flex
+    align-items: center
+    position relative
+    z-index 1
+    .line
+      position: absolute
+      width: 120%
+      height 1px
+      background: #ffffff
+      top: 25px
+      left: calc(50% + 24px)
+      z-index 0
+      opacity 0.4
+    .finish_line
+      opacity 0.8
+    .line_sm
+      width: 77%
+    .state_next
+      position: absolute
+      right: -35px
+  .state_item_large
+    flex: 1
+    justify-content: center
+    flex-shrink: 0
+    .state_next
+      position: absolute
+      right: -20px
+  .state_info
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    .state_num 
+      width: 48px
+      height: 48px
+      display: flex
+      justify-content: center
+      align-items: center
+      border-radius: 50%
+      background-color: #ffffff
+      color: #F9482E
+      font-size: 28px
+      font-weight: 600
+      opacity 0.7
+    .finish_num 
+      opacity 1
+    .state_text
+      line-height: 40px
+      margin-top: 12px
+      font-size: 28px
+      color: #ffffff
+      opacity 0.5
+    .finish_text
+      opacity 1
+  .next
+    margin-left: 18px
+.refund_item,
+.return_item
+  line-height: 33px
+  display: flex
+  margin: 0 32px
+  padding: 14px 0 
+  color: #333
+  font-size: 24px
+  .return_title,
+  .refund_title
+    flex: 0 0 144px
+  .refund_remarks
+  .return_remarks
+    flex: 1 1 auto
+    padding-right: 30px
+// .return_item+ .return_item, .refund_item+.refund_item
+//   border-top: 1px solid #f2f2f2
+.refund_item:last-child, .return_item:last-child
+  padding-bottom: 30px
+.refund_proof
+  padding: 0 32px 32px 32px
+  .title
+    line-height: 33px
+    margin-bottom: 28px
+    color: #333
+    font-size: 24px
+  .proof_img
+    display: flex
+    flex-wrap: wrap
+    .img 
+      width: 178px
+      height: 178px
+      border-radius: 8px
+      margin: 0 8px 8px 0
+.noborder_bottom
+  border-bottom: none
+.return
+  font-size: 28px
+  color: #333
+  padding: 24px 0
+  margin: 0 32px
+  font-weight: 500
+  // border-bottom: 1px solid #f2f2f2
+.button_box
+  position: fixed
+  right: 0
+  bottom: 0
+  left: 0
+  z-index: 99
+  background: #fff
+  padding: 32px
+  display: flex
+  justify-content: flex-end
+  .button
+    width: 240px
+    height: 68px
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 34px
+    background-color: #f9482e
+    font-size: 28px
+    color: #fff
+.popup_header
+  width: 100%
+  height: 89px
+  position: relative
+  display: flex
+  justify-content: center
+  align-items: center
+  border-bottom: 1px solid #e6e6e6
+  .close
+    position: absolute
+    right: 0
+    top: 50%
+    padding: 12px 32px
+    transform: translateY(-50%)
+.popup_body
+  margin-top: 20px
+  .xrequired:before
+    content: '* '
+    color: red
+  .xrequired
+    flex: 0 0 165px
+  .item
+    display: flex
+    align-items: center
+    margin: 0 24px
+    padding: 28px 0
+    border-bottom: 1px solid #f2f2f2
+    color: #333
+    font-size: 24px
+  .input::placeholder
+    color: #c9c9c9
+    line-height: 1
+  .input
+    flex: 1 1 auto
+    line-height: 1
+.popup_button
+  margin-top: 48px
+  display: flex
+  justify-content: center
+  .btn
+    width: 77.8%
+    height: 68px
+    // position: absolute
+    bottom: 78px
+    display: flex
+    justify-content: center
+    align-items: center
+    border-radius: 34px
+    background-color: #f9482e
+    font-size: 28px
+    color: #fff
+  .gray_btn
+    background: #dfdfdf
+
+
+.red
+  color: #f9482e
+
+.info_box_title
+  font-size: 32px
+  color: #333333
+  padding: 30px 46px
+  position: relative
+  border-bottom: 1px solid #f2f2f2
+  font-weight: bold
+  &:before
+    position: absolute
+    content: ''
+    width: 6px
+    height: 28px
+    border-radius: 3px
+    margin: auto 0
+    left: 24px
+    top: 0
+    bottom: 0
+    background: #F9482E
+
+
+.back
+  background: #F7F8FA
+  width: 100%
+  height 100%
+  position: fixed
+  left :0
+  top: 0
+  z-index -1
+
+
+.product_box
+  padding: 28px 32px
+  background:rgba(255,255,255,1);
+  // border-radius:12px;
+  margin-top: 24px
+  margin-bottom: 24px
+  .buy_icon
+    font-size: 24px
+    color: #ffffff
+    background: rgba(249, 72, 46, 1)
+    width: 32px
+    height 32px
+    border-radius: 4px
+    text-align: center
+    line-height: 32px
+  .title
+    font-size: 28px 
+    display: flex
+    align-items: center
+    position: relative
+    .font
+      // margin-left: 10px
+      font-weight: bold
+      color: #555555
+    .status_box
+      position: absolute
+      right: 0
+      top: 0
+      font-size: 28px
+      color: #656565
+    .red
+      color: #F9482E
+    :global
+      .iconfont
+        font-size: 28px
+        line-height: 28px
+      .turnright
+        margin-left: 10px
+        font-size: 20px
+  .info_box
+    display: flex
+    margin-top: 28px
+    .img
+      width: 178px
+      height 178px
+      display: block
+      margin-bottom: 0
+      flex-shrink: 0
+      border-radius:6px;
+    .info_right
+      margin-left: 18px
+      flex: 1
+      .item_line
+        display: flex
+        align-items: center
+        justify-content: space-between
+        font-size: 24px
+        line-height: 24px
+        .info_title
+          width: 290px
+          display: block
+          color: rgba(51, 51, 51, 1)
+        .num
+          color: rgba(102, 102, 102, 1) 
+        .recv
+          background: #FEECEA
+          color: #F9482E
+          padding: 2px 10px
+          display: inline-block
+          margin-top: 24px
+      .second
+        color: rgba(201, 201, 201, 1)
+        margin-top: 17px
+      .all_price
+        text-align: right
+        display: flex
+        align-items: center
+        justify-content: flex-end
+        font-size: 24px
+        color: rgba(52, 52, 52, 1)
+        margin-top: 20px
+        .all_num
+          font-weight: bold
+          font-size: 28px
+     
+
+.last_button
+  color: rgba(249, 72, 46, 1)
+  border: 1px solid rgba(249, 72, 46, 1)
+  font-size: 28px
+  padding: 18px 32px
+  // flex: 1
+  background: #ffffff
+  border-radius: 44px
+  text-align: center
+  line-height: 32px
+  display: flex
+  align-items: center
+  justify-content: center
+  .icon_phone
+    font-size: 40px
+    margin-right: 10px
+.last_button+.last_button
+  margin-left: 20px
+.red_button
+  background: rgba(249, 72, 46, 1)
+  color: #ffffff
+.gray_button
+  color: #999999
+  border-color: #aaaaaa
+.kefu_box
+  font-size: 24px
+  color: #999999
+  .title
+    font-size: 28px
+    color: #333333
+    margin-bottom: 5px
+.process_box
+  margin-bottom: 0
+  background: #F9482E
+  color: #ffffff
+
+.copy_box
+  color: rgba(249, 72, 46, 1)
+  margin-left: 10px
+  font-size: 24px
+  background: #ffffff
+  border: 1px solid rgba(249, 72, 46, 1)
+  padding: 0px 12px
+  border-radius:4px;
+  line-height: 34px
+  height 34px
+  font-weight: 400
+.reject_box
+  :global
+    .at-modal__header
+      padding: 30px 0
+      font-size: 28px
+      &:after
+        border: 0
+    .at-modal__content
+      padding-top: 0
+  .text_area
+    border: 1px solid #EAEAEA
+    padding: 20px
+    width: 450px
+    height: 200px
+    border-radius: 4px
+
+
+.modal_button_box
+  display: flex
+  align-items: center
+  justify-content: space-between
+  width: 100%
+  .item
+    flex: 1
+    text-align: center
+    padding: 24px
+    position: relative
+    font-size: 28px
+    color: #777777
+  .red
+    color: rgba(249, 72, 46, 1)
+  .item+ .item
+    &:before
+      position: absolute
+      left: 0
+      top: -50%
+      height 200%
+      width: 1px
+      content: ''
+      transform: scale(0.5)
+      background: #e5e5e5
+
+.list_item
+  font-size: 24px
+  line-height: 24px
+  padding: 0 24px 0 60px
+  position relative
+  &:before
+    position: absolute
+    content: ' '
+    left 45px
+    top: 10px
+    width: 8px
+    height 8px
+    background: #F9482E
+    line-height: 8px
+    border-radius: 50%
+  .title
+    color: #555555
+    font-weight: bold
+  .date
+    color: #999999
+    margin-top: 12px
+.list_item+.list_item
+  margin-top: 32px

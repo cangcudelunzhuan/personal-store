@@ -1,0 +1,32 @@
+.errorPage {
+  text-align: center;
+  padding: 40rpx;
+  font-size: 30rpx;
+}
+.errorPage .button {
+  border-radius: 10rpx;
+  margin-top: 10rpx;
+  display: inline-block;
+  border: 1rpx solid cornflowerblue;
+  color: cornflowerblue;
+  padding: 10rpx;
+}
+.noContentTips {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 100rpx 20rpx 20rpx;
+  text-align: center;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+.noContentTips .emptyBanner {
+  width: 250rpx;
+  height: 170rpx;
+  display: inline-block;
+  margin: 0 auto 20rpx;
+}
+.marginBottom30 {
+  margin-bottom: 30rpx;
+}

@@ -1,0 +1,363 @@
+/**
+ * @Author: cai.ping
+ * @Email: cai.ping@jdxiaokang.com
+ * @Update: 2020-02-26 15:13:21
+ * @Description: true
+ */
+
+.container
+  padding-bottom: 150px
+  :global
+    .content-simple
+      line-height: 40px
+      text-align: left 
+      padding: 0 25px
+    .at-modal__footer--simple .at-modal__action > button:last-child:nth-child(2)
+      color: #F9482E
+    .at-modal__header
+      padding: 35px 24px
+      color: #777777
+.addres_box
+  color: #676767
+  font-size: 28px
+  text-align: center
+  padding: 45px 0
+  line-height: 28px
+  background: #ffffff
+  .icon
+    display: inline-block
+    width: 60px
+    height 60px
+    line-height: 60px
+    text-align: center
+    font-size: 30px
+    color: #888888
+.transfee_box
+  display: flex
+  justify-content: space-between
+  font-size: 24px
+  line-height: 24px 
+  .red
+    margin-left: 10px
+.order_info
+  display: flex
+  align-items: center
+  font-size: 24px
+  .title
+    font-size: 24px!important
+.order_info+.order_info
+  margin-top: 28px
+
+.product_box
+  padding: 32px 24px
+  background:rgba(255,255,255,1);
+  margin-bottom: 24px
+  .buy_icon
+    font-size: 24px
+    color: #ffffff
+    background: rgba(249, 72, 46, 1)
+    width: 32px
+    height 32px
+    border-radius: 4px
+    text-align: center
+    line-height: 32px
+  .title
+    font-size: 28px 
+    line-height: 40px
+    display: flex
+    align-items: center
+    position: relative
+    .icon_shop
+      font-size: 28px
+      color: rgba(50, 50, 50, 1)
+    .font
+      margin-left: 10px
+      color: rgba(50, 50, 50, 1)
+      max-width: 420px
+      white-space: nowrap
+      text-overflow: ellipsis
+      overflow: hidden
+    .status_box
+      position: absolute
+      right: 0
+      top: 0
+      font-size: 28px
+      color: #656565
+      display: flex
+      align-items: center
+      line-height: 40px
+    .red
+      color: #F9482E
+      font-weight: bold
+    :global
+      .turnright
+        margin-left: 10px
+  .info_box
+    display: flex
+    position: relative
+    margin-top: 24px
+    .img
+      width: 178px
+      height 178px
+      display: block
+      margin-bottom: 0
+      flex-shrink: 0
+      border-radius:6px;
+    .info_right
+      margin-left: 24px
+      flex: 1
+      .item_line_container
+        min-height: 52px
+      .item_line
+        display: flex
+        align-items: center
+        justify-content: space-between
+        font-size: 24px
+        line-height: 24px
+        padding-top: 16px
+        .info_title
+          width: 340px
+          display: block
+          color: rgba(51, 51, 51, 1)
+          line-height: 34px
+        .num
+          color: rgba(102, 102, 102, 1) 
+        .recv
+          background: #FEECEA
+          color: #F9482E
+          padding: 6px 10px
+          display: inline-block
+          margin-top: 8px
+          line-height: 1
+      .second
+        color: rgba(201, 201, 201, 1)
+      .all_price
+        text-align: right
+        display: flex
+        align-items: center
+        justify-content: flex-end
+        font-size: 28px
+        color: rgba(101, 101, 101, 1)
+        .all_num
+          font-weight: bold
+      .post_feebox
+        text-align: right 
+        margin-top: 20px
+        color: #888888
+
+.clock_box
+  display: flex
+  align-items: center
+  letter-spacing: -1px
+  :global
+    .iconfont
+      font-size: 35px
+      margin-right: 10px
+    .taro-text
+      background: transparent
+      color: #fff
+      font-size: 30px
+      padding: 0 1px
+    .taro-text:nth-child(1), .taro-text:nth-child(2), .taro-text:nth-child(3), .taro-text:nth-child(4),.taro-text:nth-child(5),
+    label 
+      display: none
+    .taro-text:nth-child(8)
+      position: relative
+      margin-right: 10px
+      &:after
+        position: absolute
+        content: ':'
+        left: 20px
+        top: -2px
+
+
+
+
+
+
+.gray
+  color: #B2B2B2
+.red
+  color: #F9482E
+
+.button_box
+  position: fixed
+  bottom: 0
+  left: 0
+  z-index: 99
+  background: #fff
+  width: 100%
+  .content
+    display: flex
+    align-items: flex-end
+    justify-content: space-between
+    padding: 32px 28px
+    font-size: 24px
+    .red
+      font-size: 32px
+    .gray
+      font-size: 20px
+      margin-left: 10px
+    .rigth 
+      display: flex
+      align-items: center
+      justify-content: flex-end 
+      flex: 1
+      .button
+        background:rgba(249,72,46,1);
+        border-radius:34px;
+        color: #ffffff
+        font-size: 28px
+        padding: 18px 36px
+        line-height: 28px
+        margin-left: 20px
+        border: 2px solid rgba(249,72,46,1);
+        flex-shrink: 0
+      .gray_button
+        background: #ffffff
+        color: #B3B3B3
+        border-color: #B3B3B3
+
+
+.item
+  display: flex
+  align-items: center
+  margin: 0 28px
+  font-size: 28px
+  line-height: 28px
+  background: #ffffff
+  .left
+    width: calc(100% - 40px)
+    padding-right: 40px
+    color: #333333
+    .gray
+      color: #333333
+      margin-top: 18px
+      display: block 
+      line-height: 40px
+      font-size: 24px
+      text-align: left
+      position: relative   
+    .red
+      color: #F9482E
+    .name_box
+      display: flex
+      align-items: center
+      font-weight: bold    
+      .name
+        display: inline-block
+        text-align: left
+      .tel
+        margin-left: 20px
+        display: flex
+        align-items: center
+
+.copy_box
+  color: rgba(249, 72, 46, 1)
+  margin-left: 30px
+  font-size: 24px
+  background: #ffffff
+  border: 1px solid rgba(249, 72, 46, 1)
+  padding: 0px 12px
+  border-radius:4px;
+  line-height: 34px
+  height 34px
+  font-weight: 400
+
+
+.red_back
+  background: #F9482E
+  padding: 36px 0 56px 0
+  text-align: center 
+  color: #fff
+  .status_line
+    display: flex
+    align-items: center
+    justify-content: center
+    font-size: 34px
+    line-height: 34px
+    margin-bottom: 20px
+    padding-top: 10px
+    :global
+      .iconfont
+        font-size: 43px
+        margin-right: 15px
+        // color: #F9482E
+        // background: #fff
+  .clock_box
+    margin-left: 20px
+  .desc
+    opacity: 0.6
+    font-size: 26px
+
+.addres_box
+  position: relative
+  top: -20px
+.trans_box
+  margin-top: 20px
+  text-align: left 
+  .date
+    color: #B3B3B3
+    font-size: 20px
+    margin-top: 10px
+
+
+
+.after_box
+  padding: 0
+  .item
+    padding: 28px 0
+    font-size: 24px
+    line-height: 24px
+    display: flex
+    align-items: center
+    position: relative
+    .label
+      width: 130px
+      flex-shrink: 0
+  .img_item
+    flex-direction: column
+    align-items: flex-start
+    .desc
+      margin-top: 20px
+      .img
+        width: 178px
+        height:178px
+        display: inline-block
+        border-radius: 8px
+        margin-right: 10px
+        margin-bottom: 10px
+  .item+.item
+    &:before
+      width: 200%
+      height:2px
+      background:  rgba(242,242,242,1)
+      left:-50%
+      top: -1px
+      transform: scale(0.5)
+      position: absolute
+      content: ''
+  .title
+    font-size: 28px
+    font-weight: 600
+    line-height: 28px
+
+
+.back
+  background: #F7F7F7
+  width: 100%
+  height 100%
+  position: fixed
+  left :0
+  top: 0
+  z-index -1
+
+.live_type
+  background: rgba(249, 72, 46, 1)
+  color: #ffffff
+  font-size: 22px
+  padding: 3px 8px
+  border-radius: 4px
+  margin-right: 5px
+  flex-shrink: 0
+  display: inline

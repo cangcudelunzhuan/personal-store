@@ -1,0 +1,14 @@
+<block a:if="{{$taroCompReady}}">
+    <view>
+        <view style="{{anonymousState__temp}}">
+            <slot></slot>
+        </view>
+        <block a:if="{{!isLoaded}}">
+            <view style="{{anonymousState__temp2}}">
+                <view a:key="$original" style="{{item.$loopState__temp4}}" a:for="{{loopArray61}}" a:for-item="item" a:for-index="_anonIdx2"></view>
+                <view a:key="$original" class="skeletonBg" style="{{item.$loopState__temp6}}" a:for="{{loopArray62}}" a:for-item="item" a:for-index="_anonIdx4"></view>
+                <view a:key="$original" class="skeletonBg" style="{{item.$loopState__temp8}}" a:for="{{loopArray63}}" a:for-item="item" a:for-index="_anonIdx6"></view>
+            </view>
+        </block>
+    </view>
+</block>
