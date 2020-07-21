@@ -9,22 +9,22 @@ const wxUtils = {
   // 微信授权
   authorize(params = {}) {
     // 不需要授权的情况
-    if(Config.runEnv !== 'weixin'){
+    if (Config.runEnv !== 'weixin') {
       return false;
     }
 
     let toUrl = document.URL;
     Object.keys(params).forEach(item => {
-      if(toUrl.indexOf(`${item}=`)>0){
+      if (toUrl.indexOf(`${item}=`) > 0) {
         const reg = new RegExp(`${item}=[^&$]+`);
         toUrl = toUrl.replace(reg, `${item}=${params[item]}`);
       } else {
-        toUrl = toUrl+(toUrl.indexOf('?') > 0?'&':'?')+item+'='+params[item];
+        toUrl = toUrl + (toUrl.indexOf('?') > 0 ? '&' : '?') + item + '=' + params[item];
       }
     });
 
-    const queryParams = this.getURLSearchParams({to3: 'wxAuthorize', appId: Config.appId});
-    
+    const queryParams = this.getURLSearchParams({ to3: 'wxAuthorize', appId: Config.appId });
+
     Taro.setStorageSync('authoBackUrl', toUrl);
     globalThis.location.href = `/station.html?${queryParams}`;
   },
@@ -94,7 +94,6 @@ const wxUtils = {
       const string1 = `jsapi_ticket=${ticket}&noncestr=${nonceStr}&timestamp=${nowTime}&url=${signShareUrl}`;
       const osha = new jsSHA(string1, "TEXT");
       const signature = osha.getHash("SHA-1", "HEX");
-
       wx.config({
         debug: false,
         appId: Config.appId,
@@ -197,6 +196,8 @@ const wxUtils = {
       // });
     }
   }
+
+
 }
 
 export default wxUtils;

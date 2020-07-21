@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro';
 import { $ajax, message, Common } from '@jxkang/wechat-utils';
 import Config from '@/config';
-import Utils, { navigateToLogin, bridge } from '@/utils'
+import { navigateToLogin, bridge } from '@/utils'
 import commonAPI from './common';
 import bankcard from './bankcard';
 import login from './login';
@@ -13,6 +13,7 @@ import password from './password';
 import order from './order';
 import bond from './bond';
 import address from './address';
+import yuncang from './yuncang';
 
 const clientHeader = Config.runEnv; // 'H5';
 const requestCount = [];
@@ -22,12 +23,6 @@ let requestTid = null;
 function getUserToken() {
   const storeToken = Taro.getStorageSync('userInfo').token || '';
   const cookieToken = JSON.parse(Common.getCookie('userInfo') || '{}');
-  if ('ios,android'.indexOf(Config.runEnv) > -1 && cookieToken.token && storeToken && cookieToken.token !== storeToken) {
-    console.warn('非常诡异的情况', cookieToken.token, storeToken);
-    Utils.logger({
-      logs: `非常诡异的情况, ${JSON.stringify(cookieToken)} - ${JSON.stringify(Taro.getStorageSync('userInfo'))}`
-    });
-  }
   return cookieToken.token || storeToken;
 }
 
@@ -40,42 +35,53 @@ $ajax.setBaseUrl(
 // 注入全局的请求头
 $ajax.injectHeaders({
   jdxiaokang_client: clientHeader,
-  token: getUserToken()
+  token: getUserToken(),
+  shopType: Taro.getStorageSync('userInfo').shopType
+  // shopType: 'CLOUD_SHOP'
 });
 
 // 注入全局方法
 $ajax.injectResponse((resModel) => {
   if (resModel) {
     const responseCode = `${resModel.responseCode}`;
-    const getRequest = (urlQuery) => {
-      if (urlQuery.indexOf('//') > -1) {
-        urlQuery = urlQuery.replace(/[^?]+\?/, '?');
-      }
-      urlQuery = urlQuery.slice(1);
-      var result = {};
-      var kvs = urlQuery.split('&');
-
-      for (var i = 0; i < kvs.length; i++) {
-        var paramsItems = kvs[i].split('=');
-        if (paramsItems[0]) {
-          result[paramsItems[0]] = paramsItems[1];
-        }
-      }
-      return result;
-    };
-
     const { search, path } = Taro._$router;
-    if (path.indexOf('/login/login') === -1 && (responseCode === '1000010001' || responseCode === '1000010002')) { // 登录信息过期,重新登录
-      navigateToLogin({
-        params: getRequest(search),
-        desc: '[system] file:model/index.js line:32'
-      });
-      bridge.callhandler('exit');
-    } else if (responseCode === '1000010020' && path.indexOf('/invitecode/invitecode') > 0) {
-      Taro.navigateTo({ // Taro.reLaunch
-        url: `/pages/enter/enter${search}`
-      });
-    }
+
+    /**
+     * 各种状态码事务处理
+     */
+    Common.seek()
+      // 登录信息过期,重新登录
+      .equal(
+        path.indexOf('/login/login') === -1 && (responseCode === '1000010001' || responseCode === '1000010002'),
+        function () {
+          navigateToLogin({
+            params: Common.getRequest(search),
+            desc: '[system] file:model/index.js line:32'
+          });
+          bridge.callhandler('exit');
+        }
+      )
+      // 申请入注
+      .equal(
+        responseCode === '1000010020' && path.indexOf('/invitecode/invitecode') > 0,
+        function () {
+          Taro.navigateTo({ // Taro.reLaunch
+            url: `/pages/enter/enter${search}`
+          });
+        }
+      )
+      // 公司账户未开通银行账户
+      .equal(
+        responseCode === '1000010010' && path.indexOf('/bankcard/bankcard') < 0,
+        function () {
+          Taro.navigateTo({
+            url: `/pages/bankcard/bankcard${search}`
+          });
+        }
+      )
+      .else(() => { })
+      .get()()
+
   }
 });
 
@@ -107,7 +113,9 @@ $ajax.injectRevolution({
 });
 
 export const getFetchHeader = (onlyClient) => Common.extend({
-  jdxiaokang_client: clientHeader
+  jdxiaokang_client: clientHeader,
+  shopType: Taro.getStorageSync('userInfo').shopType
+  // shopType: 'CLOUD_SHOP',
 }, onlyClient ? {} : { token: getUserToken() });
 
 export default {
@@ -122,5 +130,5 @@ export default {
   order,
   bond,
   address,
+  yuncang,
 }
-

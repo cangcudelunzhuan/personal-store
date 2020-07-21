@@ -35,6 +35,7 @@ class Storeinfo extends Taro.Component {
       phone: '',
       weixnNo: '',
       weixnQrCode: '',
+      invitationUserPhone: ''
     };
   }
 
@@ -135,7 +136,7 @@ class Storeinfo extends Taro.Component {
   componentDidHide() { }
 
   render() {
-    const { mask, logo, shopName, contacts, phone, weixnNo, weixnQrCode, } = this.state;
+    const { mask, logo, shopName, contacts, phone, weixnNo, weixnQrCode, invitationUserPhone } = this.state;
     const isPhone = /^1\d{10}$/
     return (
       <View>
@@ -200,6 +201,19 @@ class Storeinfo extends Taro.Component {
               {(!isPhone.test(phone) && phone) && <AtIcon value='alert-circle' size='20' color='#F9482E' className={styles.icon}></AtIcon>}
             </View>
           </View>
+          {invitationUserPhone && <View className={`${styles.list} last`}>
+            <Text>推荐人手机</Text>
+            <View className={styles.has_errorline}>
+              <Input
+                className={styles.insert}
+                type='text'
+                placeholder={invitationUserPhone}
+                // value={invitationUserPhone}
+                maxLength={11}
+                disabled
+              />
+            </View>
+          </View>}
           <View className={`${styles.list} last`}>
             <Text>店铺微信号</Text>
             <View>

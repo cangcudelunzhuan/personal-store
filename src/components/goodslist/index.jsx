@@ -10,7 +10,7 @@ class GoodsList extends Taro.Component {
   constructor(props) {
     super(props)
     this.state = {
-    
+
     }
   }
   componentDidMount() {
@@ -58,9 +58,9 @@ class GoodsList extends Taro.Component {
     })
   }
 
-  goDetail = (itemId) => {
+  goDetail = (detail) => {
     Taro.navigateTo({
-      url: `/pages/goodsdetail/goodsdetail?itemId=${itemId}`
+      url: `/pages/goodsdetail/goodsdetail?itemId=${detail.itemId}&agentItemId=${detail.agentItemId}`
     })
   }
 
@@ -74,7 +74,7 @@ class GoodsList extends Taro.Component {
         {(goodsList || []).map((v, index) => {
           return (
             <AtSwipeAction
-              key={index}
+              key={index + 1}
               isOpened={v.openItem}
               disabled={isSwiper == 0 ? null : 'disabled'}
               onClick={(e) => this.handleClick(e, v)}
@@ -108,7 +108,7 @@ class GoodsList extends Taro.Component {
               ]}
             >
               <View className={styles.eveInner} key={v.id}>
-                <View className={styles.leftInner} onClick={() => this.goDetail(v.itemId)}>
+                <View className={styles.leftInner} onClick={() => this.goDetail(v)}>
                   <Image className={styles.leftInnerImg} src={Utils.getFileUrl(v.mainImgUrl) || Assets.home.backImage} alt='' />
                 </View>
                 <View className={styles.RightInner}>

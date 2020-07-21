@@ -95,11 +95,11 @@ const config = {
       }
     },webpackChain(chain, webpack){
       chain.output.publicPath('./');
-      if(SYS_ENV !== 'production'){
+      // if(SYS_ENV !== 'production'){
         const now = Date.now();
         chain.output.filename(`js/[name]_${now}.js`);
         chain.output.chunkFilename(`chunk/[name]_${now}.js`);
-      }
+      // }
     }
   }
 }

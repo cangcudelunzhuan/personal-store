@@ -52,7 +52,7 @@ class OrderDetail extends Taro.Component {
     })
   }
   queryDetail = (orderNo) => {
-    const { isSelf = 1 } = this.$router.params
+    const { isSelf = 1, isYun = 1 } = this.$router.params
     Model.order.queryDetail({
       orderNo
     }).then(res => {
@@ -63,7 +63,8 @@ class OrderDetail extends Taro.Component {
         // res.logisticsType = res.logisticsType || 2
         this.setState({
           item: res,
-          isSelf: Number(isSelf)
+          isSelf: Number(isSelf),
+          isYun: Number(isYun)
         })
         const { afterSaleNo } = this.$router.params
         res.afterSale === 1 && (this.afterDetail(res.afterSaleNo || afterSaleNo))
@@ -169,7 +170,7 @@ class OrderDetail extends Taro.Component {
   componentDidHide() { }
 
   render() {
-    const { item, afterInfo, imgs, sureModal, actionOption, isSelf, addressInfo } = this.state;
+    const { item, afterInfo, imgs, sureModal, actionOption, isSelf, addressInfo, isYun } = this.state;
     const afterStatus = (status) => {
       let title = '售后中'
       let desc = '售后申请已提交，正在等待审核...'
@@ -292,8 +293,9 @@ class OrderDetail extends Taro.Component {
 
         <View className={styles.product_box}>
           <View className={styles.title}>
-            <View className={styles.buy_icon}>买</View>
-            <Text className={styles.font} >{item.buyerUserName}</Text>
+            <View className={styles.buy_icon}>{isYun === 1 && '买'}{isYun === 2 && '店'}</View>
+            {isYun === 1 && <Text className={styles.font} >{item.buyerUserName || '--'}</Text>}
+            {isYun === 2 && <Text className={styles.font} >{item.shopName || '--'}</Text>}
           </View>
           <View className={styles.info_box} >
             <Image className={styles.img} src={getFileUrl(item.skuImg)}></Image>
@@ -368,6 +370,14 @@ class OrderDetail extends Taro.Component {
             <Text className={styles.title}>转播自：</Text>
             <Text>{item.liveShopName}</Text>
           </View>
+          {/* <View className={styles.order_info}>
+            <Text className={styles.title}>直播主可赚：</Text>
+            <Text>{item.liveShopName}</Text>
+          </View>
+          <View className={styles.order_info}>
+            <Text className={styles.title}>我可赚：</Text>
+            <Text>{item.liveShopName}</Text>
+          </View> */}
         </View>}
         {
           afterInfo && item.afterSale === 1 &&

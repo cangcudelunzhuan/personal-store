@@ -39,6 +39,7 @@ class PayResult extends Taro.Component {
     Taro.navigateTo({
       url: `/pages/bankcard/bankcard`
     });
+    Utils.bridge.callhandler('goMain');
   }
 
   hrefTopay = () => {

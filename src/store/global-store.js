@@ -16,13 +16,15 @@ const counterStore = observable({
     systemInfo: Taro.getSystemInfoSync(),
     //订单搜索历史记录
     orderSearchHistory: Taro.getStorageSync('orderSearchHistory') || [],
+    //云仓搜索记录
+    yunCangSearchHistory: Taro.getStorageSync('yunCangSearchHistory') || [],
     shareImgInfo: Taro.getStorageSync('shareImgInfo') || {},
   },
   setData(keyName, model) {
     if (this.data.hasOwnProperty(keyName)) {
       this.data[keyName] = model;
       // 有一些记入存储的数据
-      if (['userInfo', 'envUserInfo', 'launchPay', 'orderSearchHistory', 'shareImgInfo'].includes(keyName)) {
+      if (['userInfo', 'envUserInfo', 'launchPay', 'orderSearchHistory', 'yunCangSearchHistory', 'shareImgInfo'].includes(keyName)) {
         Taro.setStorageSync(keyName, model);
       }
     }

@@ -69,9 +69,10 @@ class Search extends Taro.Component {
   }
 
   goOrder = () => {
-    const { isOrder = 1, isSelf = 1 } = this.$router.params
-    const { value, type } = this.state
-    let orderSearchHistory = Taro.getStorageSync('orderSearchHistory') || [];
+    const { isSelf = 1 } = this.$router.params
+    const { value, type, isYun, taglist } = this.state
+    // let orderSearchHistory = isOrder===1?(Taro.getStorageSync('orderSearchHistory') || []):;
+    const tagArr = taglist.reverse()
     let key = 'orderNo'
     if (type === 1) {
       key = 'orderNo'
@@ -86,16 +87,19 @@ class Search extends Taro.Component {
       message.error('请输入关键字')
       return
     }
-    orderSearchHistory.map((item, i) => {
+    tagArr.map((item, i) => {
       if (item.queryType === type && item.value === value) {
-        orderSearchHistory.splice(i, 1)
+        tagArr.splice(i, 1)
       }
     })
-    orderSearchHistory.push({ key, queryType: type, value })
-    console.log("orderSearchHistory", orderSearchHistory)
-    Taro.setStorageSync('orderSearchHistory', orderSearchHistory);
+    tagArr.push({ key, queryType: type, value })
+    if (isYun === 1) {
+      Taro.setStorageSync('orderSearchHistory', tagArr);
+    } else if (isYun === 2) {
+      Taro.setStorageSync('yunCangSearchHistory', tagArr);
+    }
     Taro.navigateTo({
-      url: `/pages/my-order/my-order?isSearchResult=2&isOrder=${isOrder}&isSelf=${isSelf}&queryType=${type}&${key}=${value}`
+      url: `/pages/my-order/my-order?isSearchResult=2&isYun=${isYun}&isSelf=${isSelf}&queryType=${type}&${key}=${value}`
     })
   }
   setValue = (e) => {
@@ -113,7 +117,12 @@ class Search extends Taro.Component {
     })
   }
   clearHistory = () => {
-    Taro.setStorageSync('orderSearchHistory', []);
+    const { isYun } = this.state
+    if (isYun === 1) {
+      Taro.setStorageSync('orderSearchHistory', []);
+    } else if (isYun === 2) {
+      Taro.setStorageSync('yunCangSearchHistory', []);
+    }
     this.setState({
       taglist: []
     })
@@ -123,8 +132,12 @@ class Search extends Taro.Component {
 
   componentDidMount() {
     const orderSearchHistory = Taro.getStorageSync('orderSearchHistory') || [];
+    const yunCangSearchHistory = Taro.getStorageSync('yunCangSearchHistory') || [];
+    let { isYun = 1 } = this.$router.params
+    isYun = Number(isYun)
     this.setState({
-      taglist: orderSearchHistory.reverse()
+      isYun,
+      taglist: isYun === 1 ? orderSearchHistory.reverse() : yunCangSearchHistory.reverse()
     })
   }
 
@@ -146,7 +159,7 @@ class Search extends Taro.Component {
               {typelist[i].name}
               <View className={`iconfont ${styles.icon} ${showList === true && styles.down}`}>&#xe643;</View>
               {showList && <View className={styles.tip_box}>
-                {typelist.map((item, i) =>
+                {typelist.map((item, index) =>
                   <View className={styles.item} onClick={() => this.setType(item.type)}>{item.name}</View>
                 )}
               </View>}
@@ -163,7 +176,7 @@ class Search extends Taro.Component {
             <View className={`iconfont ${styles.icon}`} onClick={this.clearHistory}>&#xe6f8;</View>
           </View>
           <View className={styles.tags_content}>
-            {taglist.slice(0, 20).map((item, i) =>
+            {taglist.slice(0, 20).map((item, index) =>
               <View className={styles.item} onClick={() => this.setTag(item)}>
                 {item.value.substr(0, 20)}
                 {item.value.length > 20 ? '....' : ''}

@@ -18,6 +18,33 @@ const formHandlerChange = (cmpt, formName = 'formData') => (value, key) => {
 };
 
 /**
+   * @method formatDateTime 时间戳转年月日时分秒格式
+   * @param dates 时间戳
+   * @return xxxx-xx-xx xx:xx:xx
+   */
+/**
+ * @method formatDateTime 时间戳转年月日时分秒格式
+ * @param dates 时间戳
+ * @return xxxx-xx-xx xx:xx:xx
+ */
+const formatDateTime = (dates) => {
+  const date = new Date(dates);
+  const y = date.getFullYear();
+  let m = date.getMonth() + 1;
+  m = m < 10 ? (`0${m}`) : m;
+  let d = date.getDate();
+  d = d < 10 ? (`0${d}`) : d;
+  let h = date.getHours();
+  h = h < 10 ? (`0${h}`) : h;
+  let minute = date.getMinutes();
+  minute = minute < 10 ? (`0${minute}`) : minute;
+  // let s = date.getSeconds();
+  // s = s < 10 ? (`0${s}`) : s;
+  return `${y}-${m}-${d} ${h}:${minute}`;
+};
+
+
+/**
  * 获取完整的文件URL路径
  * @param {String} v 文件路径
  */
@@ -34,6 +61,7 @@ const getFileUrl = function (v, opt) {
   }
   return v && (`${v}`.indexOf('//') > -1 ? v : `${Config.imgHost}${p}`);
 };
+
 
 
 // 是否微信环境
@@ -77,11 +105,14 @@ const delay = (cmptThis, funcs, options) => {
  */
 const navigateToLogin = function ({
   params, // 附带在登录界面的参数
-  desc // 描述 方便定位问题
+  desc, // 描述 方便定位问题
+  backUrl = document.URL,
 }) {
   params = typeof params === 'string' ? params : Common.queryString(params || {});
   const gotoLoginUrl = `/pages/login/login${params ? '?' + params : ''}`;
   console.log('[system]', desc);
+
+  Taro.setStorageSync('fromUrl', backUrl);
 
   Taro.navigateTo({
     url: gotoLoginUrl
@@ -225,6 +256,7 @@ export default {
   getAfterStatus,
   getOrderStatus,
   imgshare,
+  formatDateTime,
 }
 
 export { formHandlerChange }
@@ -239,7 +271,9 @@ export { navigateToLogin }
 export { orderPay }
 export { bridge }
 export { delay }
+export { logger }
 export { getAfterStatus }
 export { getOrderStatus }
 export { imgshare }
+export { formatDateTime }
 

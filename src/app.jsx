@@ -57,7 +57,12 @@ class App extends Component {
         'pages/address/address', // 地址管理
         'pages/edit-address/edit-address', // 编辑地址
         'pages/share-detail/share-detail', // 商品详情分享页面
-    ],
+        'pages/liblist/liblist', // 云仓界面
+        'pages/liblistDetail/liblistDetail', // 云仓界面
+        'pages/yun-goods-price/yun-goods-price', // 云仓界面
+        'pages/yc-profit/yc-profit', // 云仓收益
+        'pages/guide-private/guide-private', // 云仓店 引导页
+      ],
       window: {
         backgroundTextStyle: 'light',
         navigationBarBackgroundColor: '#F84140',
@@ -104,7 +109,7 @@ class App extends Component {
     // 用户是否已经微信授权
     envUserInfo.ctmTime = envUserInfo.ctmTime || (nowTime - 5600000);
 
-    if (!params.autho && nowTime - envUserInfo.ctmTime > 5400000 && excludePath('/launchPay') && process.env.NODE_ENV === 'production') { // '/guide'
+    if (!params.autho && nowTime - envUserInfo.ctmTime > 5400000 && excludePath('/launchPay') && (process.env.NODE_ENV === 'test' || process.env.NODE_ENV === 'production')) {
       WX.authorize({ mark });
     } else {
       // 注册微信分享
@@ -121,7 +126,7 @@ class App extends Component {
     }
 
     // 从其它界面直接进入系统情况 用户是否登录
-    if ((!userInfo || !userInfo.token) && excludePath('/login', '/guide', '/facecheck')) {
+    if ((!userInfo || !userInfo.token) && excludePath('/login', '/guide', '/goodsdetail', '/facecheck', '/share-detail')) {
       navigateToLogin({
         params,
         desc: '[system] file:app.jsx line:112'
@@ -130,7 +135,7 @@ class App extends Component {
     };
 
     // 调接口查询不同用户状态，去往不同界面
-    if (userInfo && userInfo.token && excludePath('/login', '/launchPay', '/guide', '/facecheck', '/goodsdetail')) {
+    if (userInfo && userInfo.token && excludePath('/login', '/launchPay', '/guide', '/facecheck', '/goodsdetail', '/share-detail')) {
       OB.jump({});
     }
 

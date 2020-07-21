@@ -41,7 +41,8 @@ class Collect extends Taro.Component {
       if (list) {
         const info = list.slice(-1)
         const { type, size } = info[0].file
-        const { maxSize } = this.props
+        // 默认控制在5M范围内
+        const { maxSize = 5242880 } = this.props
         const extension = type.replace(/.+\//, '')
         if (typeof maxSize === 'number' && size > maxSize) {
           const uni = maxSize / 1024 / 1024 > 1 ? `${maxSize / 1024 / 1024}M` : `${maxSize / 1024}KB`;

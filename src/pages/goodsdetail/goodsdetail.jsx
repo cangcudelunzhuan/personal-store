@@ -5,7 +5,7 @@
  * @Description: true
  */
 import Taro from '@tarojs/taro';
-import { View, Swiper, SwiperItem, Image, Text, ScrollView, Button } from '@tarojs/components';
+import { View, Swiper, SwiperItem, Image, Text, ScrollView, Video } from '@tarojs/components';
 import withPage from '@/components/with-page';
 import Model from '@/model';
 import Store from '@/store';
@@ -13,9 +13,10 @@ import Utils from '@/utils';
 import styles from './goodsdetail.module.styl';
 import { Ellipsis } from '@jxkang/wechat-cmpt';
 // import Item from '@/components/product-list/item2'
-import { AtFloatLayout, AtInputNumber } from "taro-ui"
+import { AtFloatLayout } from "taro-ui"
 import Share from '@/components/share-tool'
 import Config from '@/config';
+
 
 @withPage
 class Goodsdetail extends Taro.Component {
@@ -48,22 +49,33 @@ class Goodsdetail extends Taro.Component {
       isLogin: Taro.getStorageSync('userInfo') && Taro.getStorageSync('userInfo').companyId && Taro.getStorageSync('userInfo').token, //是否登陆
       mark: '',
       mainUrl: '', // 主图
-      noAreaModal: false
+      noAreaModal: false,
+      VideoContext: '',
+      newVideoImg: '',
+      autoplayItem: false,
     };
   }
 
   componentWillReact() { }
 
   componentDidMount() {
-    this.getShopInfo()
+    this.getShopInfo();
   }
+
   getShopInfo = () => {
-    const { itemId } = this.$router.params
+    const { itemId, frompage } = this.$router.params
     // const userInfo = Taro.getStorageSync('userInfo') || {}
 
     // const { agentItemId, isLogin } = this.state
-    this.goodsDetail(itemId);
+
     this.getImage('oneToOne');
+    if (frompage == 'shopworker') {
+      this.itemDetailShop(itemId);
+    } else if (frompage == 'iframe') {
+      this.shopDetail(itemId);
+    } else {
+      this.goodsDetail(itemId);
+    }
     this.getImage('phoneDetail');
     // if (isLogin) {
     //   this.getCollectStatus()
@@ -100,6 +112,19 @@ class Goodsdetail extends Taro.Component {
     this.setState({
       currentIndex: e.detail.current + 1
     })
+    if (e.detail.current !== 0) {
+      this.refs.myVideo.pause();
+      this.setState({
+        autoplayItem: false,
+        currentIndex: e.detail.current + 1
+      })
+    } else {
+      this.refs.myVideo.play();
+      this.setState({
+        autoplayItem: true,
+        currentIndex: e.detail.current + 1
+      })
+    }
   }
 
   hrefOdwnOrder = () => {
@@ -136,10 +161,6 @@ class Goodsdetail extends Taro.Component {
         })
       }
     })
-
-
-
-
   }
 
   rightBuy = (e) => {
@@ -211,14 +232,21 @@ class Goodsdetail extends Taro.Component {
         })
 
       }
-      this.getSku()
+      const { frompage = '' } = this.$router.params
+      console.log(frompage);
+      if (frompage == 'shopworker') {
+        this.getSku()
+      } else {
+        this.getSkuClook();
+      }
     })
   }
 
-  // 查询sku
+  // b查询sku
   getSku = () => {
+    console.log('看看有没有走这李bcha');
     const { itemId } = this.$router.params
-    const { defalutDetail } = this.state
+    const { defalutDetail, agentItemId } = this.state
     const params = {
       itemId,
       propsValues: defalutDetail
@@ -231,10 +259,33 @@ class Goodsdetail extends Taro.Component {
     })
   }
 
+  // c查询sku
+  getSkuClook = () => {
+    console.log('看看有没有走这李');
+    const { itemId, agentItemId } = this.$router.params
+    console.log('agentItemId', agentItemId);
+    const { defalutDetail } = this.state
+    const params = {
+      propsValues: defalutDetail
+    }
+    if (agentItemId) {
+      params.agentItemId = agentItemId;
+    } else {
+      params.itemId = itemId;
+    }
+    Model.goods.getSkuClook(params).then(data => {
+      if (!data) return false;
+      this.setState({
+        defalutImgMes: data,
+      })
+    })
+  }
+
 
   goodsDetail = (itemId) => {
     Model.goods.goodsDetail({ itemId }).then(res => {
       if (res) {
+        console.log('为啥点击规格会变', res);
         let d = (res && res.sku) || {}
         d.agentStatus = res.agentStatus
         this.setState({
@@ -254,7 +305,58 @@ class Goodsdetail extends Taro.Component {
           thumb: res.mainImgUrl
         });
       }
+    })
+  }
 
+  shopDetail = (itemId) => {
+    Model.goods.shopDetail({ itemId }).then(res => {
+      if (res) {
+        console.log('为啥点击规格会变', res);
+        let d = (res && res.sku) || {}
+        d.agentStatus = res.agentStatus
+        this.setState({
+          mainUrl: res.mainImgUrl,
+          goodsDetail: res, //详情数据
+          defalutDetail: res.sku && res.sku.propsList || null, //默认规格
+          defalutImgMes: d,   //默认商品
+          skuList: res.propsList, //规格列表
+          noArea: res.noArea || [],
+          tagList: this.dealTag(res.tagList || []),
+        })
+        Utils.bridge.callhandler('setShowShareIcon', {
+          show: res.selfItem !== true,
+          title: res.itemTitle,
+          description: res.itemDescription,
+          url: `/#/pages/share-detail/share-detail?itemId=${res.itemId}`,
+          thumb: res.mainImgUrl
+        });
+      }
+    })
+  }
+
+  itemDetailShop = (itemId) => {
+    Model.goods.itemDetailShop({ itemId }).then(res => {
+      if (res) {
+        console.log('为啥点击规格会变', res);
+        let d = (res && res.sku) || {}
+        d.agentStatus = res.agentStatus
+        this.setState({
+          mainUrl: res.mainImgUrl,
+          goodsDetail: res, //详情数据
+          defalutDetail: res.sku && res.sku.propsList || null, //默认规格
+          defalutImgMes: d,   //默认商品
+          skuList: res.propsList, //规格列表
+          noArea: res.noArea || [],
+          tagList: this.dealTag(res.tagList || []),
+        })
+        Utils.bridge.callhandler('setShowShareIcon', {
+          show: res.selfItem !== true,
+          title: res.itemTitle,
+          description: res.itemDescription,
+          url: `/#/pages/share-detail/share-detail?itemId=${res.itemId}`,
+          thumb: res.mainImgUrl
+        });
+      }
     })
   }
   /**
@@ -334,7 +436,7 @@ class Goodsdetail extends Taro.Component {
   }
 
   getImage = (type) => {
-    const { itemId } = this.$router.params
+    const { itemId, bannerList } = this.state
     Model.goods.getImage({
       bizId: itemId,
       bizType: 'item',
@@ -344,10 +446,23 @@ class Goodsdetail extends Taro.Component {
       if (type == 'oneToOne') {
         this.setState({
           bannerList: data.records
+        }, () => {
+          this.getImage('shortVideo');
         })
       } else if (type == 'phoneDetail') {
         this.setState({
           imgList: data.records
+        })
+      } else if (type == 'shortVideo' && data.records.length !== 0) {
+        const newVideoImg = bannerList[0].url;
+        bannerList.shift();
+        bannerList.unshift(data.records[0]);
+        console.log('bannerList', bannerList);
+        this.setState({
+          bannerList: bannerList,
+          newVideoImg: newVideoImg,
+        }, () => {
+          const { bannerList } = this.state;
         })
       }
 
@@ -420,29 +535,51 @@ class Goodsdetail extends Taro.Component {
       mainUrl,
       noArea,
       noAreaModal,
-      tagList
+      tagList,
+      newVideoImg,
+      autoplayItem,
     } = this.state;
+
+    const { frompage } = this.$router.params
+    console.log('defalutImgMes', defalutImgMes);
     return (
       <View className={styles.imgturn} style={{
         height: (isOpenItem || isOpenShare || noAreaModal) ? `${windowH}` : '100%'
       }
       }>
-        < View className={styles.bannerImg} >
+        <View className={styles.bannerImg} >
           <Swiper
             className={styles.bannerMes}
             indicatorColor='#999'
             indicatorActiveColor='#333'
-            onChange={(e) => this.handleChange(e)}
-            autoplay>
-            {(bannerList || []).map((item) => {
+            onAnimationFinish={(e) => this.handleChange(e)}
+          >
+            {(bannerList || []).map((item, index) => {
               return (
                 <SwiperItem>
-                  <Image className={styles.banner_img_items} src={Utils.getFileUrl(item.url, { w: 750 })} alt={item.name} />
+                  {item.type == 'shortVideo' ?
+                    <Video
+                      // ref="myVideo"
+                      ref='myVideo'
+                      key={index}
+                      src={Utils.getFileUrl(item.url)}
+                      controls={true}
+                      autoplay={autoplayItem}
+                      poster={`${Utils.getFileUrl(newVideoImg)}`}
+                      initialTime='0'
+                      auto-pause-if-navigate={true}
+                      enableProgressGesture={false}
+                      loop={false}
+                      muted={false}
+                      style={{ width: '100%', height: '100%' }}
+                      showMuteBtn={true}
+                      webkit-playsinline={true}
+                      playsinline={true}
+                    /> : null}
+                  {item.type == 'oneToOne' ? <View className={styles.banner_img_items} style={{ backgroundImage: `url(${Utils.getFileUrl(item.url)})`, backgroundSize: 'contain' }} /> : null}
                 </SwiperItem>
               )
             })}
-
-
           </Swiper>
           <View className={styles.numPoint}>{currentIndex}/{bannerList.length}</View>
         </View >
@@ -451,7 +588,7 @@ class Goodsdetail extends Taro.Component {
             {defalutImgMes &&
               <View>
                 <Text className={styles.priceLogo}>¥</Text>
-                <Text className={styles.priceNum}>{defalutImgMes.vipTradePrice}</Text>
+                <Text className={styles.priceNum}>{frompage == 'shopworker' ? defalutImgMes.vipTradePrice : defalutImgMes.agentVipTradePrice}</Text>
               </View>}
             {level >= 2 && defalutImgMes.maxFee > 0 &&
               <View style={{ marginLeft: '10px' }}>
@@ -587,7 +724,7 @@ class Goodsdetail extends Taro.Component {
                 <View className={styles.rightPriceBtn}>
                   <View>
                     <Text className={styles.priceLogo}>¥</Text>
-                    <Text className={styles.priceNum}>{defalutImgMes.vipTradePrice}</Text>
+                    <Text className={styles.priceNum}>{frompage == 'shopworker' ? defalutImgMes.vipTradePrice : defalutImgMes.agentVipTradePrice}</Text>
                   </View>
                   <View className={styles.selectColor}>已选：{this.getValueMes(defalutDetail)}</View>
                   <View className={styles.selectColor}>库存：{defalutImgMes.stockQty}</View>
@@ -677,13 +814,13 @@ class Goodsdetail extends Taro.Component {
               {(noArea || []).map(item =>
                 <View className={styles.item}>
                   <View className={styles.title}>{item.areaName}
-                    <View className={styles.mes}>
+                    {item.childs && <View className={styles.mes}>
                       {
-                        item.childs && (
+                        item.childs.length > 0 && (
                           this.getAreaAll({ noArea: item.childs })
                         )
                       }
-                    </View>
+                    </View>}
                   </View>
                 </View>
               )}

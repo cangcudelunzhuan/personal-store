@@ -41,6 +41,8 @@ const Bridge = {
     getOrderId: 'getOrderId',
     // 进入自营发布商品界面
     releasegood: 'releasegood',
+    // 用户完成开店流程，包括开户
+    openShopFinish: 'openShopFinish',
   },
   // 所有原生监听名称
   listenTypes: {

@@ -53,7 +53,7 @@ const List = function ({
           <Text className={styles.now_price}>
             ¥
             {
-              item.minTradePrice
+              item.minVipTradePrice
             }
           </Text>
           <Text className={styles.old_price}>

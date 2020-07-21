@@ -7,10 +7,10 @@
 import Taro from '@tarojs/taro';
 import { View, Image, Text, Input, ScrollView } from '@tarojs/components';
 import withPage from '@/components/with-page';
-import { AtFloatLayout, AtInputNumber } from "taro-ui"
+import { AtFloatLayout } from "taro-ui"
 import Model from '@/model';
 import utils from '@/utils';
-import Utils from '@/utils';
+import { multiply } from '@/utils/tointerger';
 import Config from '@/config';
 import { message } from '@jxkang/wechat-utils';
 import styles from './goods-price.module.styl';
@@ -90,7 +90,7 @@ class GoodsPrice extends Taro.Component {
             maxTradePrice: res.maxTradePrice,
             minTradePrice: res.minTradePrice,
 
-            addPercent: parseInt(res.priceIncreaseRate * 100, 10),
+            addPercent: parseInt(multiply(res.priceIncreaseRate, 100), 10),
             selectType: 0
           })
         }
@@ -124,16 +124,19 @@ class GoodsPrice extends Taro.Component {
       [increaseLabel]: increasePrice,
     }).then((res) => {
       if (!res) return false
-      // utils.bridge.callhandler('finish');
+
       if (Config.runEnv === 'android' || Config.runEnv === 'ios') { //ios、安卓交互
-        Utils.bridge.callhandler('toast', '操作成功', 0);
+        utils.bridge.callhandler('toast', { toast: '操作成功' }, 0);
+        setTimeout(() => {
+          utils.bridge.callhandler('finish');
+        }, 500);
       } else {
         message.success('操作成功')
-        setTimeout(() => {
-          Taro.redirectTo({
-            url: this.$router.params.herfType ? '/pages/goodsmange/goodsmange' : '/pages/shopworker/shopworker?tabInner=2',
-          })
-        }, (500));
+        // setTimeout(() => {
+        //   Taro.redirectTo({
+        //     url: this.$router.params.herfType ? '/pages/goodsmange/goodsmange' : '/pages/shopworker/shopworker?tabInner=2',
+        //   })
+        // }, (500));
       }
     })
   }
@@ -145,6 +148,7 @@ class GoodsPrice extends Taro.Component {
     this.getShopInfo();
     this.getPreMiumMsg()
   }
+
 
   componentWillUnmount() { }
 
@@ -243,10 +247,10 @@ class GoodsPrice extends Taro.Component {
   getPreMiumMsg = () => {
     Model.goods.getPreMiumMsg().then((res) => {
       if (res) {
-        Utils.bridge.callhandler('setShowShareIcon', {
+        utils.bridge.callhandler('setShowShareIcon', {
           show: false,
         });
-        Utils.bridge.callhandler('setShowQuestionIcon', {
+        utils.bridge.callhandler('setShowQuestionIcon', {
           show: true,
           title: res.title,
           description: res.premiumMsg,
@@ -341,6 +345,8 @@ class GoodsPrice extends Taro.Component {
     if (!goodsPriceDetail) {
       return null;
     }
+    const { globalStore: { data: { userInfo } } } = this.props;
+    console.log('userInfo', userInfo)
     return (
       <View className={styles.container}>
         <View className={styles.header}>
@@ -351,7 +357,7 @@ class GoodsPrice extends Taro.Component {
             </View>
             <View className={styles.rightHeader}>
               <View className={styles.goods_title}>{goodsPriceDetail.itemTitle}</View>
-              <View className={styles.allStork}>总库存:{goodsDetail.itemTotalStockQty}</View>
+              <View className={styles.allStork}>总库存:{goodsDetail.totalValidStockQty}</View>
             </View>
           </View>
 
@@ -391,14 +397,16 @@ class GoodsPrice extends Taro.Component {
           <View className={`${styles.cell}`}>
             <Text className={styles.cell_title}>统一加价</Text>
             <View className={styles.cell_value}>
-              <View className={styles.eve_money} onClick={this.click_item_mes}>
+
+              <View className={styles.eve_money} onClick={(userInfo.shopType == 'CLOUD_SHOP' && !goodsPriceDetail.agentPermitPrice) ? null : this.click_item_mes}>
                 <View
                   className={`iconfont ${selectType == 1 ? 'iconfuxuankuang_xuanzhong' : 'iconfuxuankuang_weixuanzhong'} 
                       ${selectType == 1 ? styles.select_style : styles.no_select_style}`}>
                 </View>
                 <View>固定金额</View>
               </View>
-              <View className={styles.eve_money} style={{ marginLeft: '10px' }} onClick={this.click_other_style}>
+
+              <View className={styles.eve_money} style={{ marginLeft: '10px' }} onClick={(userInfo.shopType == 'CLOUD_SHOP' && !goodsPriceDetail.agentPermitPrice) ? null : this.click_other_style}>
                 <View
                   className={`iconfont ${selectType === 0 ? 'iconfuxuankuang_xuanzhong' : 'iconfuxuankuang_weixuanzhong'}
                     ${selectType === 0 ? styles.select_style : styles.no_select_style}`}>
@@ -419,6 +427,7 @@ class GoodsPrice extends Taro.Component {
                 name='addpercent'
                 placeholder='0'
                 onChange={this.getAddPercent}
+                disabled={(userInfo.shopType == 'CLOUD_SHOP' && !goodsPriceDetail.agentPermitPrice) ? 'disabled' : ''}
               />
               <Text className={`${styles.grey_value} ${!!addPercent ? styles.black_value : ''}`}>{selectType == 1 ? '元' : '%'}</Text>
             </View>
@@ -497,12 +506,12 @@ class GoodsPrice extends Taro.Component {
             </View>
             <ScrollView className={styles.openInner} scrollY>
               <View className={styles.pricePhoto}>
-                <View className={styles.leftPriceImg} style={{ backgroundImage: `url(${Utils.getFileUrl(defalutImgMes.skuImg)})` }} />
+                <View className={styles.leftPriceImg} style={{ backgroundImage: `url(${utils.getFileUrl(defalutImgMes.skuImg)})` }} />
                 <View className={styles.rightPriceBtn}>
                   <View classsName={styles.priceMesBtn} style={{ marginBottom: '30px' }}>
                     {defalutImgMes.itemTitle}
                   </View>
-                  <View className={styles.selectColor}>总库存：{goodsDetail.itemTotalStockQty}</View>
+                  <View className={styles.selectColor}>总库存：{goodsDetail.totalValidStockQty}</View>
                 </View>
               </View>
               {

@@ -1,14 +1,15 @@
 
 import Taro from '@tarojs/taro';
 import { View, Input, Text } from '@tarojs/components';
+import { AtModal, AtModalHeader, AtModalContent, AtIcon } from "taro-ui"
 import { message } from '@jxkang/wechat-utils';
 import withPage from '@/components/with-page';
 import Model from '@/model';
 import Assets from '@/components/assets';
+import Pre from './pre';
+import Utils from '@/utils';
+import Shopinfo from '@/components/open-process-title';
 import styles from './bankcard.module.styl';
-import { AtModal, AtModalHeader, AtModalContent, AtIcon } from "taro-ui"
-import Pre from './pre'
-import Shopinfo from '@/components/open-process-title'
 
 @withPage
 class Bankcard extends Taro.Component {
@@ -89,7 +90,8 @@ class Bankcard extends Taro.Component {
       if (res) {
         Taro.navigateTo({
           url: `/pages/storegrade/storegrade`
-        })
+        });
+        Utils.bridge.callhandler('openShopFinish');
       }
     })
   }
@@ -240,7 +242,6 @@ class Bankcard extends Taro.Component {
       <View className={styles.out}>
         <Shopinfo />
         <View className={styles.container}>
-
           {hasInfo === false && <View>
             <View className={styles.form_box}>
               <View className={`${styles.list} last`}>
@@ -275,10 +276,8 @@ class Bankcard extends Taro.Component {
             </View>
             <View className={styles.yellow}>提示：请输入您的真实身份信息用于店铺开户收款，提现时需提供与此身份信息对应的银行卡，请谨慎填写！</View>
             {userName && isId.test(idCard) && <View className={styles.bind_btn} onClick={this.getBind}>绑定</View>}
-            {(!userName || !(isId.test(idCard))) && <View className={`${styles.bind_btn} ${styles.gray}`} >绑定</View>}
+            {(!userName || !(isId.test(idCard))) && <View className={`${styles.bind_btn} ${styles.gray}`}>绑定</View>}
           </View>}
-
-
           {hasInfo === true &&
             <View>
               <View className={styles.has_infobox}>
@@ -298,7 +297,6 @@ class Bankcard extends Taro.Component {
               {!userCustId && <View className={`${styles.bind_btn} ${styles.gray}`} >无可沿用账户</View>}
             </View>
           }
-
           <AtModal isOpened={moVisible}>
             <AtModalHeader>支付服务协议</AtModalHeader>
             <AtModalContent>
@@ -307,7 +305,6 @@ class Bankcard extends Taro.Component {
           </AtModal>
         </View >
       </View>
-
     );
   }
 

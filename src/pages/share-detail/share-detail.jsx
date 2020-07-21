@@ -5,13 +5,12 @@
  * @Description: true
  */
 import Taro from '@tarojs/taro';
-import { WX } from '@/utils';
-import { View, Swiper, SwiperItem, Image, Text, ScrollView, Button } from '@tarojs/components';
+import { View, Swiper, SwiperItem, Image, Text, ScrollView, Button, Video } from '@tarojs/components';
 import withPage from '@/components/with-page';
 import Model from '@/model';
-import Store from '@/store';
 import Config from '@/config';
 import Utils from '@/utils';
+import { message } from '@jxkang/wechat-utils';
 import Assets from '@/components/assets';
 import styles from './share-detail.module.styl';
 import { Ellipsis } from '@jxkang/wechat-cmpt';
@@ -46,30 +45,25 @@ class Goodsdetail extends Taro.Component {
       mainUrl: '', // 主图
       noAreaModal: false,
       showToAppTips: true,
-      showLabel: true,
+      VideoContext: '',
+      newVideoImg: '',
+      domain: process.env.NODE_ENV === 'production' ? 'https://shop-m.kangxiaopu.com' : 'https://daily-shop-m.kangxiaopu.com',
+      tagList: [],
     };
   }
 
   componentWillReact() { }
 
   componentDidMount() {
-    // WX.setWxConfig(Store.globalStore.data.envUserInfo.ticket);
-    // WX.setWxConfig('kgt8ON7yVITDhtdwci0qeQ9iFv9Pf4OzQjXcS7aus6KftfHWdZHuoJ4ArWyKXuyBjgSIEVXm_pzyskfAl5ar0Q')
     this.getShopInfo()
-    this.addListener()
   }
-  addListener = () => {
-    this.jumpBtn.addEventListener('launch', function () {
-      this.setState({
-        showLabel: false
-      });
-    });
-    this.jumpBtn.addEventListener('error', function (e) {
-      console.log('addEventListener error fail', e);
-    });
-    this.jumpBtn.addEventListener('click', function (e) {
-      console.log('addEventListener click');
-    });
+  addListener = (e) => {
+    if (e.detail.errMsg === 'launch:fail') {
+      this.downloadApp()
+    }
+  }
+  downloadApp = () => {
+    window.location.href = 'https://a.app.qq.com/o/simple.jsp?pkgname=com.jdxiaokang.shop.live&g_f=undefined&from=singlemessage'
   }
   getShopInfo = () => {
     const { itemId } = this.$router.params
@@ -88,14 +82,21 @@ class Goodsdetail extends Taro.Component {
           defalutDetail: res.sku && res.sku.propsList || null, //默认规格
           defalutImgMes: d,   //默认商品
           skuList: res.propsList, //规格列表
-          noArea: res.noArea || [] // 不发货地区
+          noArea: res.noArea || [], // 不发货地区
+          tagList: this.dealTag(res.tagList || []),
         })
       }
 
     })
   }
+  // 处理规格
+  dealTag = (tagList) => {
+    const a = Object.entries(tagList);
+    return a;
+  }
+
   getImage = (type) => {
-    const { itemId } = this.$router.params
+    const { itemId, bannerList } = this.state
     Model.goods.getImage({
       bizId: itemId,
       bizType: 'item',
@@ -105,15 +106,29 @@ class Goodsdetail extends Taro.Component {
       if (type == 'oneToOne') {
         this.setState({
           bannerList: data.records
+        }, () => {
+          this.getImage('shortVideo');
         })
       } else if (type == 'phoneDetail') {
         this.setState({
           imgList: data.records
         })
+      } else if (type == 'shortVideo' && data.records.length !== 0) {
+        const newVideoImg = bannerList[0].url;
+        bannerList.shift();
+        bannerList.unshift(data.records[0]);
+        console.log('bannerList', bannerList);
+        this.setState({
+          bannerList: bannerList,
+          newVideoImg: newVideoImg,
+        }, () => {
+          const { bannerList } = this.state;
+        })
       }
 
     })
   }
+
   componentWillUnmount() { }
 
   componentDidShow() { }
@@ -121,6 +136,11 @@ class Goodsdetail extends Taro.Component {
   componentDidHide() { }
   // 轮播图切换
   handleChange = (e) => {
+    if (e.detail.current !== 0) {
+      this.refs.myVideo.pause();
+    } else {
+      this.refs.myVideo.play();
+    }
     this.setState({
       currentIndex: e.detail.current + 1
     })
@@ -212,8 +232,14 @@ class Goodsdetail extends Taro.Component {
     return priceMes
   }
 
-  getApp = () => {
-    console.log('获取App')
+  checkFull = () => {
+    var isFull = document.fullscreenEnabled || window.fullScreen || document.webkitIsFullScreen || document.msFullscreenEnabled;
+    if (isFull === undefined) isFull = false;
+    return isFull;
+  }
+
+  listenVideo = () => {
+    console.log(11111);
   }
 
   render() {
@@ -229,80 +255,115 @@ class Goodsdetail extends Taro.Component {
       noArea,
       noAreaModal,
       showToAppTips,
-      showLabel
+      domain,
+      newVideoImg,
+      tagList,
     } = this.state;
+    
     return (
       <View className={styles.imgturn} style={{
         height: (isOpenItem || noAreaModal) ? `${windowH}` : '100%'
       }
       }>
         {showToAppTips ? <View className={styles.toApp}>
-          <View className={styles.appLeft}>
-            <View onClick={() => this.setState({showToAppTips : false})} className={`${styles.appColse} iconfont`}>&#xe6de;</View>
-            <Image className={styles.appLogo} src={Assets.register.logo}></Image>
+          <View className={styles.appLeft} style='height:42px;'>
+            <View onClick={() => this.setState({ showToAppTips: false })} className={`${styles.appColse} iconfont`}>&#xe6de;</View>
+            <Image className={styles.appLogo} src={Assets.register.squareLogo}></Image>
             <View className={styles.appLabel}>打开康小铺APP，纵享低价</View>
           </View>
-          <Button className={styles.appRight}>
-            <wx-open-launch-app
-              appid={Config.clientAppId}
-              extinfo={JSON.stringify({itemId:this.$router.params.itemId})}
-              ref={node => this.jumpBtn = node}
-            >
-              {showLabel ? <div>点击app</div>
-              : <script type='text/wxtag-template'>
-                <div>立即打开</div>
-              </script>}
-              <template>
-                <div class="btn">App内查看</div>
-              </template>
-            </wx-open-launch-app>
-          </Button>
+          <View className={styles.appRight} style='height:42px;'>
+            <View style='width:100%;height:42px;background:#F9482E;'>
+              <wx-open-launch-app
+                onError={(e) => this.addListener(e)}
+                appid={Config.clientAppId}
+                extinfo={`${domain}/#/pages/goodsdetail/goodsdetail?itemId=${this.$router.params.itemId}`}
+              >
+                <script type='text/wxtag-template'>
+                  <button
+                    style='font-size:15px;color: #ffffff;display:block;width:80px;border:0px;background:#F9482E;padding:0px;margin:0px auto;height:42px;line-height:42px;'
+                  >立即打开</button>
+                </script>
+              </wx-open-launch-app>
+            </View>
+          </View>
         </View> : null}
-        < View className={styles.bannerImg} >
+        <View className={styles.bannerImg} >
           <Swiper
             className={styles.bannerMes}
             indicatorColor='#999'
             indicatorActiveColor='#333'
-            onChange={(e) => this.handleChange(e)}
-            autoplay>
-            {(bannerList || []).map((item) => {
+            onAnimationFinish={(e) => this.handleChange(e)}
+          >
+            {(bannerList || []).map((item, index) => {
               return (
                 <SwiperItem>
-                  <Image className={styles.banner_img_items} src={Utils.getFileUrl(item.url, { w: 750 })} alt={item.name} />
+                  {item.type == 'shortVideo' ?
+                    <Video
+                      ref="myVideo"
+                      // ref={(ele, i) => this.imgRef('myVideo', index)}
+                      src={Utils.getFileUrl(item.url)}
+                      controls={true}
+                      autoplay={false}
+                      poster={`${Utils.getFileUrl(newVideoImg)}`}
+                      initialTime='0'
+                      auto-pause-if-navigate={true}
+                      enableProgressGesture={false}
+                      loop={false}
+                      muted={false}
+                      style={{ width: '100%', height: '100%' }}
+                      showMuteBtn={true}
+                      webkit-playsinline={true}
+                      playsinline={true}
+                      onFullscreenChange={(e) => this.listenVideo(e)}
+                    /> : null}
+                  {item.type == 'oneToOne' ? <View className={styles.banner_img_items} style={{ backgroundImage: `url(${Utils.getFileUrl(item.url)})`, backgroundSize: 'contain' }}></View> : null}
                 </SwiperItem>
               )
             })}
           </Swiper>
           <View className={styles.numPoint}>{currentIndex}/{bannerList.length}</View>
         </View >
+
         <View className={styles.detailprice}>
           <View className={styles.goodsName}>
             {goodsDetail.itemTitle}
           </View>
           <View className={styles.openAppBtn}>
-            <Button className={styles.btn}>
-              {showLabel ? '请在康小铺APP内查看价格' : <wx-open-launch-app
+            <View style='width:343px;height:42px;background:#F7F8FA;'>
+              <wx-open-launch-app
+                onError={(e) => this.addListener(e)}
                 appid={Config.clientAppId}
-                extinfo={JSON.stringify({itemId:this.$router.params.itemId})}
-                ref={node => this.jumpBtn2 = node}
+                extinfo={`${domain}/#/pages/goodsdetail/goodsdetail?itemId=${this.$router.params.itemId}`}
               >
                 <script type='text/wxtag-template'>
-                  <div>请在康小铺APP内查看价格</div>
+                  <button
+                    style='font-size:15px;color: #CCCCCC;display:block;width:336px;border:0px;background:#F7F8FA;padding:0px;line-height:42px;height:42px;margin:0px auto;'
+                  >请在康小铺APP内查看价格</button>
                 </script>
-              </wx-open-launch-app>}
-            </Button>
+              </wx-open-launch-app>
+            </View>
           </View>
         </View>
-        <View className={styles.detailMes}>
-          <View>保障：</View>
-          <View className={styles.allInner}>
-            <Text>24小时发货</Text>
-            <Text className={styles.backpoint}></Text>
-            <Text>7天无理由退货</Text>
-            <Text className={styles.backpoint}></Text>
-            <Text>包邮</Text>
+        {tagList && tagList.length > 0 &&
+          <View className={styles.detailMes}>
+            {tagList.map((v, index) => {
+              return (
+                v[1].length !== 0 ?
+                  <View className={styles.inline_style} key={index + 1}>
+                    <View className={styles.label}>{v[0]}：</View>
+                    {
+                      (v[1] || []).map((item, inx) => {
+                        return <View className={styles.inline_mes} key={inx}>
+                          {item}
+                          {(v[1].length - 1) == inx ? null : <View className={styles.backpoint}></View>}
+                        </View>
+                      })
+                    }
+                  </View> : null
+              )
+            })}
           </View>
-        </View>
+        }
         {noArea && noArea.length > 0 &&
           <View className={styles.mes_item} onClick={() => this.setState({ noAreaModal: true })}>
             <View className={styles.left}>
@@ -320,24 +381,31 @@ class Goodsdetail extends Taro.Component {
             )
           })}
         </View>
-        {defalutImgMes && defalutImgMes.agentStatus == 'DOWN_SALES' && <View className={styles.off_notice}>该商品已下架，非常抱歉</View>}
-        {defalutImgMes && defalutImgMes.agentStatus == 'INVALID' && <View className={styles.off_notice}>该商品已失效，非常抱歉</View>}
-        {goodsDetail.totalValidStockQty == 0 ? <View className={styles.newfootbar}>
-          <View className={styles.button_style}>商品已售罄</View>
-        </View> : <View className={styles.footbar}>
-            <View className={styles.button_item} onClick={this.rightBuy}>查看规格</View>
-            <View className={styles.button_item}>
-              {showLabel ? '上架商品' : <wx-open-launch-app
-                  appid={Config.clientAppId}
-                  extinfo={JSON.stringify({itemId:this.$router.params.itemId})}
-                  ref={node => this.jumpBtn3 = node}
-                >
-                  <script type='text/wxtag-template'>
-                    <div>上架商品</div>
-                  </script>
-                </wx-open-launch-app>}
-            </View>
+        {goodsDetail.shelfStatus == 1 && goodsDetail.totalValidStockQty !== 0 ? <View className={styles.footbar}>
+          <View style='font-size:15px;height:34px;line-height:34px;width:167px;' className={styles.button_item} onClick={this.rightBuy}>查看规格</View>
+          <View className={styles.button_item} style='font-size:15px;height:34px;line-height:34px;width:167px;background:#332826;border-radius:4px;'>
+            <wx-open-launch-app
+              onError={(e) => this.addListener(e)}
+              appid={Config.clientAppId}
+              extinfo={`${domain}/#/pages/goodsdetail/goodsdetail?itemId=${this.$router.params.itemId}`}
+            >
+              <script type='text/wxtag-template'>
+                <button
+                  style='font-size:15px;color: #ffffff;display:block;width:167px;border:0px;background:transparent;padding:0px;line-height:34px;height:34px;margin: 0 auto;'
+                >上架商品</button>
+              </script>
+            </wx-open-launch-app>
           </View>
+        </View>
+          : null
+        }
+        {goodsDetail.shelfStatus == 0 ? <View className={styles.newfootbar}>
+          <View className={styles.off_notice}>该商品已下架，非常抱歉</View>
+        </View> : null
+        }
+        {goodsDetail.totalValidStockQty == 0 && goodsDetail.shelfStatus == 1 ? <View className={styles.newfootbar}>
+          <View className={styles.off_notice}>商品已售罄</View>
+        </View> : null
         }
 
         <View className={styles.buy_layout}>

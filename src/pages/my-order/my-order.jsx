@@ -55,7 +55,7 @@ class MyOrder extends Taro.Component {
   }
 
   getData = ({ pageNum = 1, pageSize = 4, callback }) => {
-    const { type, list, isOrder, isSelf } = this.state
+    const { type, list, isOrder, isSelf, isYun } = this.state
     const orderStatus = type === -1 ? '' : type
     let query = {}
     let afterQuery = {}
@@ -71,6 +71,12 @@ class MyOrder extends Taro.Component {
         pageSize,
         orderStatus,
       }
+    }
+    if (isYun === 2) { //云仓列表
+      const userInfo = Taro.getStorageSync('userInfo')
+      query.orderSource = 8
+      query.cloudMasterCompanyId = userInfo.companyId
+      afterQuery.cloudMasterCompanyId = userInfo.companyId
     }
     if (isSelf === 2 && isOrder === 1) {
       // query.orderSource = 6
@@ -113,13 +119,17 @@ class MyOrder extends Taro.Component {
   };
   getSearchData = ({ pageNum = 1, callback }) => {
     const { orderNo = '', itemName = '', consigneeName = '', phone = '' } = this.$router.params
-    const { queryType, list } = this.state
+    const { queryType, list, isYun } = this.state
+
     let params = {
       queryType,
       orderNo: decodeURI(orderNo),
       itemName: decodeURI(itemName),
       consigneeName: decodeURI(consigneeName),
       phone: decodeURI(phone),
+    }
+    if (isYun === 2) {
+      params.orderSource = 8
     }
     Model.order.queryListByParam(params).then(res => {
       if (res) {
@@ -143,8 +153,8 @@ class MyOrder extends Taro.Component {
 
   onScrollToLower = (fn) => {
     let { pageNum } = this.state;
-    this.state.pageNum += 1
-    this.getData({ pageNum: this.state.pageNum, callback: fn })
+    let p = pageNum + 1
+    this.getData({ pageNum: p, callback: fn })
   };
   onPullDownRefresh = (fn) => {
     const { isSearchResult } = this.state
@@ -160,7 +170,8 @@ class MyOrder extends Taro.Component {
   }
   getType = () => {
     const { index = 0,//index 0-5 高亮的table选项
-      isOrder = 1, //1 订单 2售后单
+      isOrder = 1, //1 订单 2售后单 
+      isYun = 1, //1 不是 2云仓
       isSelf = 1, //1 普通订单 2 自营订单
       isSearchResult = 1, // 1非搜索结果 2搜索结果
       queryType = 1, //1 订单号 2商品名称 3 收货人 4 电话
@@ -187,6 +198,7 @@ class MyOrder extends Taro.Component {
       index: tabList[index] ? Number(index) : 0,
       isOrder: Number(isOrder),
       isSelf: Number(isSelf),
+      isYun: Number(isYun),
       tabList,
       isSearchResult: Number(isSearchResult),
       queryType: Number(queryType)
@@ -224,7 +236,13 @@ class MyOrder extends Taro.Component {
     propsValue = `${propsValue}`.replace('[', '').replace(']', '').replace(/\"/g, "").split(',')
     const str = []
     for (let k of propsValue) {
-      str.push(k.split(':')[1])
+      if (k.indexOf("{") === -1 && k.indexOf("}") === -1) {
+        console.log("k1", k)
+        str.push(k.split(':')[1])
+      } else {
+        k = `${k}`.replace('{', '').replace('}', '')
+        k.indexOf('propertyValue') >= 0 && str.push(k.split(':')[1])
+      }
     }
     return str.join('/')
   }
@@ -282,9 +300,9 @@ class MyOrder extends Taro.Component {
   }
 
   goDetail = (orderNo, afterSaleNo) => {
-    const { isSelf } = this.state
+    const { isSelf, isYun } = this.state
     Taro.navigateTo({
-      url: `/pages/order-detail/order-detail?orderNo=${orderNo}&afterSaleNo=${afterSaleNo}&isSelf=${isSelf}`
+      url: `/pages/order-detail/order-detail?orderNo=${orderNo}&afterSaleNo=${afterSaleNo}&isSelf=${isSelf}&isYun=${isYun}`
     })
   }
   // goAfter = () => {
@@ -293,9 +311,9 @@ class MyOrder extends Taro.Component {
   //   })
   // }
   geSearch = () => {
-    const { isOrder, isSelf } = this.state
+    const { isOrder, isSelf, isYun } = this.state
     Taro.navigateTo({
-      url: `/pages/order-search/order-search?isOrder=${isOrder}&isSelf=${isSelf}`
+      url: `/pages/order-search/order-search?isYun=${isYun}&isSelf=${isSelf}`
     })
   }
   goAfter = (afterSaleNo) => {
@@ -321,7 +339,7 @@ class MyOrder extends Taro.Component {
       isLoaded, error, hasMore, isEmpty, list,
       screenHeight, type, tabList, buyType,
       buyList, isShow, shopLevel, info,
-      isOrder, isSelf, index, sureModal, actionOption, isSearchResult
+      isOrder, isSelf, index, sureModal, actionOption, isSearchResult, isYun
     } = this.state;
     return (
       <View className={styles.order_content}>
@@ -369,8 +387,9 @@ class MyOrder extends Taro.Component {
             <View className={styles.product_box} key={i + 1}>
               <View className={styles.title}>
                 {/* <View className="iconfont">&#xe691;</View> */}
-                <View className={styles.buy_icon}>买</View>
-                <Text className={styles.font} onClick={this.goIndex}>{item.buyerUserName || '--'}</Text>
+                <View className={styles.buy_icon}>{isYun === 1 && '买'}{isYun === 2 && '店'}</View>
+                {isYun === 1 && <Text onClick={this.goIndex} className={styles.font} >{item.buyerUserName || '--'}</Text>}
+                {isYun === 2 && <Text onClick={this.goIndex} className={styles.font} >{item.shopName || '--'}</Text>}
                 <View className="iconfont turnright" onClick={this.goIndex}>&#xe68f;</View>
                 <Text className={`${styles.status_box} ${styles.red}`}>
                   {getAfterStatus({
@@ -432,8 +451,9 @@ class MyOrder extends Taro.Component {
             <View className={styles.product_box}>
               <View className={styles.title}>
                 {/* <View className="iconfont">&#xe691;</View> */}
-                <View className={styles.buy_icon}>买</View>
-                <Text className={styles.font} >{item.buyerUserName || '--'}</Text>
+                <View className={styles.buy_icon}>{isYun === 1 && '买'}{isYun === 2 && '店'}</View>
+                {isYun === 1 && <Text className={styles.font} >{item.buyerUserName || '--'}</Text>}
+                {isYun === 2 && <Text className={styles.font} >{item.shopName || '--'}</Text>}
                 {/* <View className="iconfont turnright" >&#xe68f;</View> */}
                 <Text className={`${styles.status_box} ${styles.red}`}>
                   {getOrderStatus({

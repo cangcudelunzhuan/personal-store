@@ -17,6 +17,7 @@ export default {
   empty5: '/assets/images/1587978758374_6931.png', // 邀请记录无数据
   empty6: '/assets/images/1587978758430_6502.png', // 累计收益无数据
   empty7: '/assets/images/1587978759176_7549.png', // 提现金额无数据
+  empty8: '/assets/images/1594083929866_4098.png', // 云仓收益无数据
 
   //zunbo图片
   turnImg: '/assets/images/1589369234888_6171.png'

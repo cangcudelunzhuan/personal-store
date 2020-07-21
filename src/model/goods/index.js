@@ -23,12 +23,16 @@ export default {
   withdrawList: (reqModel) => $get('/settleservice/withdraw/list', reqModel),
   //商品详情
   goodsDetail: (reqModel) => $get('/productservice/product/agentitem/itemDetail', reqModel),
+  itemDetailShop: (reqModel) => $get('/productservice/product/agentitem/itemDetailShop', reqModel),
+  shopDetail: (reqModel) => $get('/productservice/product/agentitem/shop-itemDetail', reqModel),
   // 查询图片
   getImage: (reqModel) => $get('/productservice/img/getImageByType', reqModel),
   // 点击规格查询其他可选择规格属性
   getItemPropsValue: (reqModel) => $post('/productservice/product/agentitem/getItemPropsValue', reqModel),
-  // 通过规格反查sku
+  // b 通过规格反查sku
   getSku: (reqModel) => $post('/productservice/product/agentitem/getItemSkuByItemPropsValue', reqModel),
+  // c 查看
+  getSkuClook: (reqModel) => $post('/productservice/product/agentitem/getItemSkuByPropsValue', reqModel),
   // 分销市场 搜索接口
   elasticSearch: reqModel => $get('/elasticsearch-service/product/market/search-item-summary', reqModel),
   //加价说明

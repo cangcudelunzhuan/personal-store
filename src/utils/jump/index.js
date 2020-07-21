@@ -9,11 +9,13 @@ const OB = {
     const args = Array.from(arguments);
     return !args.some((v) => path.includes(v));
   },
-  jump({ telphone = '', isFree = 3 }) {
+  jump({ telphone = '', isFree = 3, callback }) {
     const { path, params } = Taro._$router;
     const { mark = '' } = params;
     const { phone } = Taro.getStorageSync('userInfo')
     Model.login.openProcess().then(res => {
+      const fromUrl = Taro.getStorageSync('fromUrl');
+      Taro.removeStorageSync('fromUrl');
       Utils.logger({
         loger: '调用openProcess接口成功,可以分析该用户应该跳往哪个界面',
         api_url: Model.login.openProcess.toString(),
@@ -24,32 +26,37 @@ const OB = {
       //   message.error('您已享用免费试用')
       //   return
       // }
-      if (res === 0) {
+      if(typeof callback === 'function'){
+        if(callback(res) === false){
+          return false;
+        }
+      }
+      if (res === 0) { // 申请入驻
         Taro.navigateTo({
           url: `/pages/enter/enter?phone=${telphone || phone}&isFree=${isFree}`
         })
       }
-      if (res === 1) {
+      if (res === 1) { // 绑定银行卡 remove
         Taro.navigateTo({
           url: `/pages/bankcard/bankcard`
         })
       }
-      if (res === 2) {
+      if (res === 2) { // 店铺会员等级 remove
         Taro.navigateTo({
           url: `/pages/storegrade/storegrade`
         })
       }
-      if (res === 3) {
+      if (res === 3) { // 开启完成 remove
         Taro.navigateTo({
           url: `/pages/cometo-admin/cometo-admin`
         })
       }
       if (res === 4) {
         Taro.navigateTo({
-          url: OB.excludePath('/login', 'guide') ? `${path}${Taro._$router.search}` : `/pages/shopworker/shopworker`
+          url: OB.excludePath('/login', '/guide/') ? `${path}${Taro._$router.search}` : fromUrl || `/pages/shopworker/shopworker`
         })
       }
-      if (res === 20) {
+      if (res === 20) { // 全新的用户 绑定服务商
         Taro.navigateTo({
           url: `/pages/invitecode/invitecode?&mark=${mark}&phone=${telphone || phone}&isFree=${isFree}`
         })

@@ -10,10 +10,10 @@ import { message } from '@jxkang/wechat-utils';
 import Share from '@/components/share-tool'
 import Config from '@/config';
 import Store from '@/store';
-import Utils, { getFileUrl } from '@/utils';
+import Utils from '@/utils';
 import Model from '@/model';
 import Assets from '@/components/assets'
-import styles from './my-qrcode.module.styl';
+import styles from './myQrcode.module.styl';
 
 
 // saveCanvas
@@ -53,7 +53,7 @@ class MyQrcode extends Taro.Component {
       }
     })
   }
-  
+
   copys = () => {
     const { code } = this.state
     Taro.setClipboardData({
@@ -63,13 +63,13 @@ class MyQrcode extends Taro.Component {
       }
     })
   }
-  
+
   companyCode = () => {
     const { globalStore } = Store
     const userInfo = globalStore.data.userInfo || {}
 
     Model.shopInfo.companyCode().then(res => {
-      if(res){
+      if (res) {
         this.setState({
           code: res.invitationCode,
           icon: res.icon
@@ -77,7 +77,7 @@ class MyQrcode extends Taro.Component {
 
         const img = `${res.icon && res.icon.indexOf('.svg') === -1 ? Config.crossFile + res.icon : Assets.share.logo}`
         Utils.imgshare.getLogoImg(img)
-        
+
         userInfo.invitationCode = res.invitationCode;
         globalStore.setData('userInfo', userInfo);
 
@@ -115,15 +115,15 @@ class MyQrcode extends Taro.Component {
     message.loading('正在加载中...');
 
     getImageInfo({
-      src: `${icon ? Config.crossFile+icon : Assets.share.logo}`
+      src: `${icon ? Config.crossFile + icon : Assets.share.logo}`
     }).then(res => {
       clearTimeout(tid);
       drawCvs(res);
     });
 
-    tid = setTimeout(function(){
+    tid = setTimeout(function () {
       drawCvs(null);
-    },4000);
+    }, 4000);
 
   }
 
@@ -132,7 +132,7 @@ class MyQrcode extends Taro.Component {
       url: `/pages/yq-list/yq-list`
     })
   }
-  
+
   componentWillUnmount() {
 
   }

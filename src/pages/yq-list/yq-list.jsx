@@ -30,6 +30,8 @@ class Success extends Taro.Component {
       isEmpty: false,
       pageNum: 1
     };
+    
+    this.listStatus = false;
   }
 
   getData = ({ pageNum = 1, pageSize = 15, callback }) => {
@@ -47,15 +49,21 @@ class Success extends Taro.Component {
           hasMore: res.hasNextPage === true,
           pageNum: res.pageNum,
           isEmpty: l.length <= 0
+        }, () => {
+          if (callback) {
+            callback()
+            this.listStatus = false;
+          }
         })
-        if (callback) {
-          callback()
-        }
       }
 
     })
   }
   onScrollToLower = (fn) => {
+    if(this.listStatus){
+      return false;
+    }
+    this.listStatus = true;
     let { pageNum } = this.state;
     this.state.pageNum += 1
     this.getData({ pageNum: this.state.pageNum, callback: fn })
